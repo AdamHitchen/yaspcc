@@ -1,0 +1,21 @@
+version: '3.6'
+services:
+  nginx:
+    build: nginx 
+    links:
+      - php
+    ports: 
+      - 443:443
+      - 80:80
+    volumes:
+    - ./yaspcc:/source
+  php:
+    build: php
+    environment:
+      XDEBUG_CONFIG: remote_host=
+    links: 
+      - redis
+    volumes:
+      - ./yaspcc:/source
+  redis:
+    image: redis
