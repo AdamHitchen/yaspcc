@@ -1,0 +1,16 @@
+{
+    "name": "hitchen/yaspcc",
+    "description": "Yet Another Steam Play Compatibility Checker",
+    "type": "project",
+    "license": "GPLv3",
+    "authors": [
+        {
+            "name": "Adam Hitchen",
+            "email": "adam.hitchen2@gmail.com"
+        }
+    ],
+    "require": {},
+    "autoload" : {
+        "psr-4" : {"Yaspcc\\":"src/"}
+    }
+}
