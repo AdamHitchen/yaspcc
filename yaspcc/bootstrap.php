@@ -13,6 +13,7 @@ try {
     $container = $containerBuilder->build();
 
     $container->set(\Psr\Log\LoggerInterface::class,$monolog);
+    $container->set(\Yaspcc\Routing\RouterInterface::class,$container->make(\Yaspcc\Routing\SymfonyRouter::class));
 
     return $container;
 
