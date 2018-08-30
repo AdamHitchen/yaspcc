@@ -1,16 +1,11 @@
 <?php declare(strict_types=1);
 
-
 namespace Yaspcc\Routing;
-
 
 use DI\Container;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Matcher\UrlMatcher;
 use Symfony\Component\Routing\RequestContext;
-use Symfony\Component\Routing\RouteCollection;
-use Symfony\Component\Routing\Router;
 
 class SymfonyRouter implements RouterInterface
 {
@@ -56,11 +51,12 @@ class SymfonyRouter implements RouterInterface
         $request = Request::createFromGlobals();
 
         $matcher = $this->getMatcher();
-        $res = $matcher->match($request->getPathInfo());
+        $match = $matcher->match($request->getPathInfo());
         $result = call_user_func([
-            $this->container->make($res["_controller"][0]),
-            $res["_controller"][1]
+            $this->container->make($match["_controller"][0]),
+            $match["_controller"][1]
         ]);
+
     }
 
     /**
