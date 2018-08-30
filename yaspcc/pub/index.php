@@ -3,7 +3,7 @@
 require_once('../vendor/autoload.php');
 
 /** @var \DI\Container $container */
-$container = include __DIR__ . '/../bootstrap.php';
+$container = include __DIR__ . '/../config/bootstrap.php';
 
 // Match routes
 /** @var \Yaspcc\Routing\RouterInterface $router */
