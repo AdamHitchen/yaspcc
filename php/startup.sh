@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
-#{{FOR DEV ONLY}} volume permission issues workaround - requires process configured to run as 'php'
+#{{FOR DEV ONLY}} volume permission issues workaround
 
 # get the group & user ID of the source directory
-TARGET_GID=$(stat -c "%g" /source)
-TARGET_UID=$(stat -c "%u" /source)
+TARGET_GID=$(stat -c "%g" /yaspcc)
+TARGET_UID=$(stat -c "%u" /yaspcc)
 
 EXISTS=$(cat /etc/group | grep $TARGET_GID | wc -l)
 
@@ -24,5 +24,6 @@ usermod -a -G $GROUP www-data
 fi
 
 sed -i 's/www-data/php/i' /usr/local/etc/php-fpm.d/*
-
+mkdir /home/php
+chown -R php:php /home/php
 php-fpm -F
