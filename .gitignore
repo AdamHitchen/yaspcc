@@ -2,4 +2,6 @@
 
 yaspcc/vendor/
 
+yaspcc/config/redis\.yaml
+
 yaspcc/config/steam\.yaml
