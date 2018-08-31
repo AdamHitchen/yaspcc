@@ -3,6 +3,8 @@
 require_once('../vendor/autoload.php');
 const ROOT_DIR = __DIR__ . '/../';
 
+const ROOT_DIR = __DIR__ . '/../';
+
 /** @var \DI\Container $container */
 $container = include __DIR__ . '/../config/bootstrap.php';
 
