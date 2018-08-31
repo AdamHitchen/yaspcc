@@ -1,7 +1,5 @@
 <?php declare(strict_types=1);
 
-use Yaspcc\Config\RedisConfig;
-
 require_once('../vendor/autoload.php');
 const ROOT_DIR = __DIR__ . '/../';
 
