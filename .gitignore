@@ -1,3 +1,5 @@
 \.idea/
 
 yaspcc/vendor/
+
+yaspcc/config/steam\.yaml
