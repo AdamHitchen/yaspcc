@@ -19,6 +19,8 @@ try {
 
     $container->set(\Psr\Log\LoggerInterface::class, $monolog);
     $container->set(\Yaspcc\Routing\RouterInterface::class, $container->make(\Yaspcc\Routing\SymfonyRouter::class));
+    $container->set(\Yaspcc\Cache\Redis\RedisClientInterface::class, $container->make(\Yaspcc\Cache\Redis\Wrapper\PredisWrapper::class));
+    $container->set(\Yaspcc\Cache\KeyValueCacheInterface::class, $container->make(\Yaspcc\Cache\Redis\Service\RedisService::class));
 
     return $container;
 
