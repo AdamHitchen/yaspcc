@@ -10,21 +10,21 @@ class Game
 {
     /** @var string */
     public $name;
-    /** @var string */
-    private $id;
+    /** @var int */
+    public $id;
     /** @var bool */
-    private $hasCompleteData;
+    public $hasCompleteData;
     /** @var bool */
-    private $isLinuxNative;
+    public $isLinuxNative;
     /** @var string */
-    private $imageUrl;
+    public $imageUrl;
 
     /**
      * Game constructor.
      * @param int $id
      * @param string $name
      */
-    public function __construct(string $name, string $id)
+    public function __construct(string $name, int $id)
     {
         $this->name = $name;
         $this->id = $id;
@@ -44,13 +44,21 @@ class Game
      * @param \stdClass $object
      * @return Game
      */
-    public function fromJsonObject(\stdClass $object): Game
+    public function fromJsonRequestObject(\stdClass $object): Game
     {
         $objData = $object->data;
         $this->hasCompleteData = true;
         $this->isLinuxNative = $objData->platforms->linux ?? false;
         $this->imageUrl = $objData->header_image;
 
+        return $this;
+    }
+
+    public function fromJson(\stdClass $jsonObj): Game
+    {
+        $this->isLinuxNative = $jsonObj->isLinuxNative;
+        $this->hasCompleteData = $jsonObj->hasCompleteData;
+        $this->imageUrl = $jsonObj->imageUrl;
         return $this;
     }
 }

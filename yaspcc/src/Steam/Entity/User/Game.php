@@ -25,7 +25,7 @@ class Game
      */
     public function __construct(
         int $appid,
-        int $playtime
+        ?int $playtime
     ) {
         $this->appid = $appid;
         $this->playtime = $playtime;

@@ -6,6 +6,7 @@ use GuzzleHttp\Client;
 use Yaspcc\Steam\Config\Config;
 use Yaspcc\Steam\Entity\Game;
 use Yaspcc\Steam\Entity\User\Profile;
+use Yaspcc\Steam\Exception\ApiLimitExceededException;
 use Yaspcc\Steam\Exception\GameNotFoundException;
 use Yaspcc\Steam\Exception\NoGameDataException;
 
@@ -62,13 +63,18 @@ class GameRequest
             "http://store.steampowered.com/api/appdetails/?appids=" . $gameId
         );
         $response = json_decode($result->getBody()->getContents());
+
+        //The store api returns an object with the ID as a child - can't access numeric children directly in PHP
         $obj = get_object_vars($response)[$gameId];
         if ($obj->success) {
-            $game = new Game($obj->gameName, $gameId);
-            return $game->fromJsonObject($response);
+            $game = new Game($obj->data->name, $gameId);
+            return $game->fromJsonRequestObject($obj);
+        } else {
+            if (empty($obj)) {
+                throw new ApiLimitExceededException();
+            }
         }
 
         throw new GameNotFoundException();
     }
-
 }
