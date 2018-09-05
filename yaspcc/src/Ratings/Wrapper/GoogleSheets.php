@@ -1,12 +1,12 @@
 <?php declare(strict_types=1);
 
-namespace Yaspcc\Spreadsheet\Wrapper;
+namespace Yaspcc\Ratings\Wrapper;
 
-use Yaspcc\Spreadsheet\Config\Config;
+use Yaspcc\Ratings\Config\GoogleSheetsConfig as Config;
 
 /**
  * Class GoogleSheets
- * @package Yaspcc\Spreadsheet\Wrapper
+ * @package Yaspcc\Ratings\Wrapper
  */
 class GoogleSheets
 {
@@ -40,7 +40,7 @@ class GoogleSheets
         $this->sheet = new \Google_Service_Sheets($this->client);
     }
 
-    public function getSheet(): array
+    public function getSheetArray(): array
     {
         return $this->sheet->spreadsheets_values->get(
             $this->config->getSpreadsheetId(),

@@ -1,14 +1,14 @@
 <?php declare(strict_types=1);
 
-namespace Yaspcc\Spreadsheet\Config;
+namespace Yaspcc\Ratings\Config;
 
 use Symfony\Component\Yaml\Yaml;
 
 /**
- * Class Config
- * @package Yaspcc\Steam\Config
+ * Class GoogleSheetsConfig
+ * @package Yaspcc\Steam\GoogleSheetsConfig
  */
-class Config
+class GoogleSheetsConfig
 {
     const CONFIG_PATH = ROOT_DIR . "config/google.yaml";
 
@@ -20,7 +20,7 @@ class Config
     private $authConfigPath = ROOT_DIR . "config/googlecreds.json";
 
     /**
-     * Config constructor.
+     * GoogleSheetsConfig constructor.
      * @param Yaml $yaml
      */
     public function __construct(Yaml $yaml)
