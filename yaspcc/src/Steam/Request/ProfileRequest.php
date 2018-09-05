@@ -35,7 +35,12 @@ class ProfileRequest
      */
     public function getUserProfile(string $userId): Profile
     {
-        $userId = $this->getIdByUsername($userId) ?? $userId;
+        $uid = $this->getIdByUsername($userId);
+
+        if(!empty($uid)) {
+            $username = $userId;
+            $userId = $uid;
+        }
 
         $result = $this->httpClient->request(
             'GET',
@@ -43,7 +48,8 @@ class ProfileRequest
         );
         $response = json_decode($result->getBody()->getContents());
 
-        $profile = (new Profile($userId))->fromJson($response);
+        $profile = (new Profile($userId))->fromRequestJson($response);
+        $profile->username = $username ?? null;
 
         return $profile;
     }
@@ -62,6 +68,7 @@ class ProfileRequest
 
         } catch (\Exception $exception) {
             if ($exception->getCode() == 404) {
+                //TODO: change this
                 return null;
             }
 
