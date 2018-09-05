@@ -3,8 +3,6 @@
 require_once('../vendor/autoload.php');
 const ROOT_DIR = __DIR__ . '/../';
 
-const ROOT_DIR = __DIR__ . '/../';
-
 /** @var \DI\Container $container */
 $container = include __DIR__ . '/../config/bootstrap.php';
 
@@ -12,4 +10,3 @@ $container = include __DIR__ . '/../config/bootstrap.php';
 /** @var \Yaspcc\Routing\RouterInterface $router */
 $router = $container->get(Yaspcc\Routing\RouterInterface::class);
 $router->match();
-
