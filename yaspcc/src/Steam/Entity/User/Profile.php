@@ -10,6 +10,8 @@ class Profile
     public $games;
     /** @var */
     public $date;
+    /** @var string */
+    public $username;
 
     /**
      * Profile constructor.
@@ -25,7 +27,7 @@ class Profile
      * @param \stdClass $response
      * @return Profile
      */
-    public function fromJson(\stdClass $response): Profile
+    public function fromRequestJson(\stdClass $response): Profile
     {
         foreach ($response->response->games as $game) {
             $this->games[] = new Game($game->appid, $game->playtime_forever);
@@ -33,4 +35,18 @@ class Profile
 
         return $this;
     }
+
+    /**
+     * @param \stdClass $response
+     * @return Profile
+     */
+    public function fromJson(\stdClass $response): Profile
+    {
+        foreach ($response->games as $game) {
+            $this->games[] = new Game($game->appid, $game->playtime_forever);
+        }
+
+        return $this;
+    }
+
 }
