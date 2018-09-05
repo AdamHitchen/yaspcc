@@ -38,9 +38,9 @@ class RedisService implements KeyValueCacheInterface
     /**
      * @param string $key
      */
-    function get(string $key)
+    function get(string $key): string
     {
-        $this->redisClient->get($key);
+        return $this->redisClient->get($key);
     }
 
     /**
@@ -49,6 +49,6 @@ class RedisService implements KeyValueCacheInterface
      */
     function exists(string $key): bool
     {
-        $this->redisClient->exists($key);
+        return $this->redisClient->exists($key);
     }
 }
