@@ -85,7 +85,10 @@ class GoogleSheetsRepository
         }
     }
 
-
+    /**
+     * @param $gameId
+     * @return mixed|null
+     */
     public function getRating($gameId)
     {
         if($this->cache->exists("rating:".$gameId)) {
