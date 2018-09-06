@@ -12,10 +12,20 @@ services:
   php:
     build: php
     environment:
-      XDEBUG_CONFIG: remote_host=192.168.0.12
+      XDEBUG_CONFIG: remote_host=172.17.0.1
+      PHP_IDE_CONFIG: serverName=yasp.cc
     links: 
       - redis
     volumes:
       - ./yaspcc:/yaspcc
+  php-cron:
+    build: php-cron
+    environment:
+      XDEBUG_CONFIG: remote_host=172.17.0.1
+      PHP_IDE_CONFIG: serverName=yasp.cc
+    links:
+    - redis
+    volumes:
+    - ./yaspcc:/yaspcc
   redis:
     image: redis
