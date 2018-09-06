@@ -29,3 +29,8 @@ services:
     - ./yaspcc:/yaspcc
   redis:
     image: redis
+    volumes:
+      - redis-data:/data
+    command: ["redis-server","--appendonly","yes"]
+volumes:
+  redis-data:
