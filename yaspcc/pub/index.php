@@ -8,5 +8,5 @@ $container = include __DIR__ . '/../config/bootstrap.php';
 
 // Match routes
 /** @var \Yaspcc\Routing\RouterInterface $router */
-$router = $container->get(Yaspcc\Routing\RouterInterface::class);
+$router = $container->get(Yaspcc\Api\Routing\RouterInterface::class);
 $router->match();

@@ -1,12 +1,12 @@
 <?php declare(strict_types=1);
 
 
-namespace Yaspcc\Routing;
+namespace Yaspcc\Api\Routing;
 
 
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
-use Yaspcc\Controller\TestController;
+use Yaspcc\Api\Controller\TestController;
 
 final class SymfonyRouteConfig
 {

@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Yaspcc\Routing;
+namespace Yaspcc\Api\Routing;
 
 use DI\Container;
 use Symfony\Component\HttpFoundation\Request;

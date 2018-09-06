@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Yaspcc\Controller;
+namespace Yaspcc\Api\Controller;
 
 use Symfony\Component\Routing\Annotation\Route;
 
