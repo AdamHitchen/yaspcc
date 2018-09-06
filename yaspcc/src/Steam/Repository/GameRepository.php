@@ -31,13 +31,16 @@ class GameRepository
     }
 
     /**
-     * @param $id
+     * @param int $id
      * @return Game
+     * @throws GameNotFoundException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Yaspcc\Steam\Exception\NoGameDataException
      */
     public function get(int $id): Game
     {
-        if ($this->cache->exists("game:".$id)) {
-            $json = $this->cache->get("game:".$id);
+        if ($this->cache->exists("game:" . $id)) {
+            $json = $this->cache->get("game:" . $id);
             $GLOBALS["cache"]++;
         } else {
             try {
@@ -47,13 +50,22 @@ class GameRepository
             } catch (ApiLimitExceededException $exception) {
                 $GLOBALS["dev"]++;
                 $game = $this->gameRequest->getGame($id);
+            } catch (GameNotFoundException $exception) {
+                $this->addIgnoredId($id);
+                throw new GameNotFoundException("This is probably not a game.");
             }
         }
 
-        if (empty($json) && (empty($game) || !$game->isComplete())) {
-            $this->addToQueue($id);
-        } else if(empty($json) && $game->isComplete()) {
-            return $game;
+        if(empty($json)){
+            if(empty($game)) {
+                $this->addIgnoredId($id);
+            } else if (!$game->isComplete()) {
+                $this->addToQueue($id);
+            } else if ($game->isComplete()) {
+                return $game;
+            }
+
+            throw new GameNotFoundException("Game not available");
         }
 
         return $this->createGameFromJson($json);
@@ -68,7 +80,33 @@ class GameRepository
         //TODO: implement createGameFromJson()
         $gameObj = json_decode($json);
         $game = new Game($gameObj->name, $gameObj->id);
-        return  $game->fromJson($gameObj);
+        return $game->fromJson($gameObj);
+    }
+
+    /**
+     * @return array
+     */
+    public function getIgnoreList(): array
+    {
+        if($this->cache->exists("game:ignore")){
+            return json_decode($this->cache->get("game:ignore"),true);
+        }
+
+        return [];
+    }
+
+    /**
+     * @param int $gameId
+     */
+    private function addIgnoredId(int $gameId)
+    {
+        if ($this->cache->exists("game:ignore")) {
+            $arr = json_decode($this->cache->get("game:ignore"), true);
+            $arr[] = $gameId;
+            $this->cache->set("game:ignore", json_encode($arr));
+        } else {
+            $this->cache->set("game:ignore", json_encode([$gameId]));
+        }
     }
 
     /**
@@ -83,6 +121,13 @@ class GameRepository
         $this->cache->set("game:" . $game->id, json_encode($game));
     }
 
+    /**
+     * @return array
+     */
+    public function getAllApps(): array
+    {
+        return $this->gameRequest->getAllApps();
+    }
 
     /**
      * @param $id
