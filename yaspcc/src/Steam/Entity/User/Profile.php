@@ -43,7 +43,7 @@ class Profile
     public function fromJson(\stdClass $response): Profile
     {
         foreach ($response->games as $game) {
-            $this->games[] = new Game($game->appid, $game->playtime_forever);
+            $this->games[] = new Game($game->appid, $game->playtime_forever ?? 0);
         }
 
         return $this;

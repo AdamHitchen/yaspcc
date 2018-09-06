@@ -3,6 +3,7 @@
 namespace Yaspcc\Steam\Request;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\ClientException;
 use Yaspcc\Steam\Config\Config;
 use Yaspcc\Steam\Entity\Game;
 use Yaspcc\Steam\Entity\User\Profile;
@@ -33,11 +34,12 @@ class GameRequest
     }
 
     /**
-     * @param string $gameId
+     * @param int $gameId
      * @return Game
+     * @throws NoGameDataException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function getGame(string $gameId): Game
+    public function getGame(int $gameId): Game
     {
         $result = $this->httpClient->request(
             'GET',
@@ -55,13 +57,21 @@ class GameRequest
     /**
      * @param $gameId
      * @return Game
+     * @throws ApiLimitExceededException
+     * @throws GameNotFoundException
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function getGameByStoreApi($gameId): Game
+    public function getGameByStoreApi(int $gameId): Game
     {
-        $result = $this->httpClient->request(
-            'GET',
-            "http://store.steampowered.com/api/appdetails/?appids=" . $gameId
-        );
+        try {
+            $result = $this->httpClient->request(
+                'GET',
+                "http://store.steampowered.com/api/appdetails/?appids=" . $gameId
+            );
+        } catch (ClientException $exception) {
+            throw new ApiLimitExceededException();
+        }
+
         $response = json_decode($result->getBody()->getContents());
 
         //The store api returns an object with the ID as a child - can't access numeric children directly in PHP
@@ -71,10 +81,19 @@ class GameRequest
             return $game->fromJsonRequestObject($obj);
         } else {
             if (empty($obj)) {
-                throw new ApiLimitExceededException();
+                throw new GameNotFoundException();
             }
         }
 
         throw new GameNotFoundException();
+    }
+
+    public function getAllApps(): array
+    {
+        $result = $this->httpClient->request(
+            'GET',
+            'http://api.steampowered.com/ISteamApps/GetAppList/v0002/?key=' . $this->config->getApiKey() . '&format=json'
+        );
+        return json_decode($result->getBody()->getContents(), true);
     }
 }
