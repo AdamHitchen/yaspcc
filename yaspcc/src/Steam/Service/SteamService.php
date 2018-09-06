@@ -7,40 +7,39 @@ use Psr\Log\LoggerInterface;
 use Yaspcc\Steam\Entity\Game;
 use Yaspcc\Steam\Entity\User\Profile;
 use Yaspcc\Steam\Exception\UserNotFoundException;
-use Yaspcc\Steam\Request\GameRequest;
-use Yaspcc\Steam\Request\ProfileRequest;
+use Yaspcc\Steam\Repository\GameRepository;
+use Yaspcc\Steam\Repository\ProfileRepository;
 
 class SteamService
 {
     /**
-     * @var GameRequest
-     */
-    private $gameRequest;
-    /**
-     * @var ProfileRequest
-     */
-    private $profileRequest;
-    /**
      * @var LoggerInterface
      */
     private $logger;
+    /**
+     * @var GameRepository
+     */
+    private $gameRepository;
+    /**
+     * @var ProfileRepository
+     */
+    private $profileRepository;
 
     /**
      * SteamService constructor.
-     * @param GameRequest $gameRequest
-     * @param ProfileRequest $profileRequest
+     * @param GameRepository $gameRepository
+     * @param ProfileRepository $profileRepository
      * @param LoggerInterface $logger
      */
     public function __construct
     (
-        GameRequest $gameRequest,
-        ProfileRequest $profileRequest,
+        GameRepository $gameRepository,
+        ProfileRepository $profileRepository,
         LoggerInterface $logger
     ) {
-
-        $this->gameRequest = $gameRequest;
-        $this->profileRequest = $profileRequest;
         $this->logger = $logger;
+        $this->gameRepository = $gameRepository;
+        $this->profileRepository = $profileRepository;
     }
 
     /**
@@ -52,7 +51,7 @@ class SteamService
     public function getProfile(string $steamId): Profile
     {
         try {
-            $profile = $this->profileRequest->getUserProfile($steamId);
+            $profile = $this->profileRepository->get($steamId);
         } catch (BadResponseException $exception) {
             $this->logger->alert($exception->getMessage());
         }
@@ -64,14 +63,21 @@ class SteamService
         return $profile;
     }
 
-    /**
-     * @param string $gameId
-     * @return Game
-     */
-    public function getGame(string $gameId) : Game
+    public function getIgnoreList()
     {
-        $game = $this->gameRequest->getGameByStoreApi(420);
-        return $game;
+        return $this->gameRepository->getIgnoreList();
+    }
+
+    /**
+     * @param int $gameId
+     * @return Game
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Yaspcc\Steam\Exception\GameNotFoundException
+     * @throws \Yaspcc\Steam\Exception\NoGameDataException
+     */
+    public function getGame(int $gameId) : Game
+    {
+        return $this->gameRepository->get($gameId);
     }
 
 }
