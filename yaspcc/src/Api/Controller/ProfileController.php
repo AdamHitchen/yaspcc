@@ -38,9 +38,10 @@ class ProfileController
                 ->send();
             return;
         }
-        $response = new Response();
-        $response->
-        $response->setStatusCode(201);
+
+        $response->setStatusCode(200);
+        $response->setContent($profileRatings);
+        $response->send();
     }
 
     /**

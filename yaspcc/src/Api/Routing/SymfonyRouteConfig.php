@@ -34,7 +34,6 @@ final class SymfonyRouteConfig
         ]));
     }
 
-
     public function getRoutes()
     {
         return $this->routeCollection;
