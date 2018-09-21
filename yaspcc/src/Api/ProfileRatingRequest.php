@@ -90,7 +90,7 @@ class ProfileRatingRequest
         foreach($profile->games as $game) {
             if(!in_array($game->appid,$ignored)) {
                 try {
-                    $games[]=$this->steamService->get($game->appid);
+                    $games[]=$this->steamService->getGame($game->appid);
                 } catch (\Exception $exception) {
                     $this->logger->alert("Game in user profile not found: " . $game->appid);
                 }
