@@ -6,7 +6,7 @@ namespace Yaspcc\Api\Routing;
 
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
-use Yaspcc\Api\Controller\TestController;
+use Yaspcc\Api\Controller\ProfileController;
 
 final class SymfonyRouteConfig
 {
@@ -29,8 +29,8 @@ final class SymfonyRouteConfig
     {
         $routes = $this->routeCollection;
         $prefix = 'api/v1/';
-        $routes->add('test', new Route($prefix.'test',[
-           '_controller' => [TestController::class, 'list']
+        $routes->add('', new Route($prefix.'profile/{id}',[
+           '_controller' => [ProfileController::class, 'list']
         ]));
     }
 
