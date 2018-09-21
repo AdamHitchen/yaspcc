@@ -5,5 +5,5 @@ namespace Yaspcc\Ratings\Service;
 interface RatingServiceInterface
 {
     function getAllRatings(): array;
-    function getGameRatings(int $gameId): array;
+    function getGameRatings(int $gameId): ? \stdClass;
 }

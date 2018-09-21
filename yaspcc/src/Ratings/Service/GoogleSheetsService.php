@@ -25,9 +25,9 @@ class GoogleSheetsService implements RatingServiceInterface
         $this->repository = $repository;
     }
 
-    public function getGameRatings(int $gameId): array
+    public function getGameRatings(int $gameId): ? \stdClass
     {
-        $this->repository->getRating($gameId);
+        return $this->repository->getRating($gameId);
     }
 
     public function getAllRatings(): array
