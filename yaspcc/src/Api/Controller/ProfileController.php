@@ -21,12 +21,13 @@ class ProfileController
      *
      * @Route("/test", name="test_list")
      */
-    public function list($data)
+    public function list($id)
     {
+
         $response = new Response();
         $response->headers->set('Content-Type','application/json');
         try {
-            $profileRatings = $this->profileRatingRequest->getProfileRatings($data['id']);
+            $profileRatings = $this->profileRatingRequest->getProfileRatings($id);
         } catch (GuzzleException $e) {
             $response->setStatusCode(500)
                 ->setContent('{"error" : "Something went wrong while contacting the server" }')
