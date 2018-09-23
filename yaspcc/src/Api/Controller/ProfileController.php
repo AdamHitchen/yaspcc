@@ -14,7 +14,7 @@ class ProfileController
      * @var ProfileRatingRequest
      */
     private $profileRatingRequest;
-    
+
     public function list($id)
     {
 

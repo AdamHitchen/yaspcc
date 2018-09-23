@@ -4,7 +4,7 @@ namespace Yaspcc\Cache;
 
 interface KeyValueCacheInterface
 {
-    function set(string $key, string $value, $expire = null);
+    function set(string $key, $value, $expire = null);
 
     function get(string $key);
 

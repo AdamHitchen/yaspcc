@@ -41,14 +41,11 @@ class GameRepository
     {
         if ($this->cache->exists("game:" . $id)) {
             $json = $this->cache->get("game:" . $id);
-            $GLOBALS["cache"]++;
         } else {
             try {
                 $game = $this->gameRequest->getGameByStoreApi($id);
-                $GLOBALS["store"]++;
                 $this->set($game);
             } catch (ApiLimitExceededException $exception) {
-                $GLOBALS["dev"]++;
                 $game = $this->gameRequest->getGame($id);
             } catch (GameNotFoundException $exception) {
                 $this->addIgnoredId($id);
