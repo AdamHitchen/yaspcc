@@ -14,13 +14,7 @@ class ProfileController
      * @var ProfileRatingRequest
      */
     private $profileRatingRequest;
-
-
-    /**
-     * Matches /test exactly
-     *
-     * @Route("/test", name="test_list")
-     */
+    
     public function list($id)
     {
 
