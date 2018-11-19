@@ -9,3 +9,5 @@ yaspcc/config/steam\.yaml
 yaspcc/config/googlecreds\.json
 
 yaspcc/config/google\.yaml
+
+yaspcc/debug\.log
