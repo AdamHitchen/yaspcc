@@ -81,6 +81,7 @@ class ProfileRatingRequest
     /**
      * @param Profile $profile
      * @return array
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     private function getProfileGames(Profile $profile): array
     {
