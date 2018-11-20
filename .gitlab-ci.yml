@@ -1,0 +1,22 @@
+image: php:7.2-cli
+
+cache:
+  paths:
+  - yaspcc/vendor/
+
+stages:
+- test
+- deploy
+
+before_script:
+- apt-get update -qq && apt-get install -y git
+# Install composer
+- cd yaspcc
+- curl -sS https://getcomposer.org/installer | php
+# Install all project dependencies
+- php composer.phar install
+
+test:
+  stage: test
+  script:
+  - vendor/bin/phpunit --configuration phpunit.xml --coverage-text --colors=never
