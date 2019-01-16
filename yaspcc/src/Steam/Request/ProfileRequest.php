@@ -37,7 +37,7 @@ class ProfileRequest
     {
         $uid = $this->getIdByUsername($userId);
 
-        if(!empty($uid)) {
+        if (!empty($uid)) {
             $username = $userId;
             $userId = $uid;
         }

@@ -75,7 +75,7 @@ class SteamService
      * @throws \Yaspcc\Steam\Exception\GameNotFoundException
      * @throws \Yaspcc\Steam\Exception\NoGameDataException
      */
-    public function getGame(int $gameId) : Game
+    public function getGame(int $gameId): Game
     {
         return $this->gameRepository->get($gameId);
     }
