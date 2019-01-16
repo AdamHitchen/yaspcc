@@ -12,8 +12,8 @@ RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
      && php -r "unlink('composer-setup.php');" \
      && chmod +x composer.phar \
      && mv composer.phar /usr/local/bin/composer
-RUN mkdir /scripts
-COPY ./startup.sh /scripts/startup.sh
-WORKDIR /scripts
-RUN chmod +x startup.sh
-ENTRYPOINT ["/scripts/startup.sh"]
+WORKDIR /yaspcc
+RUN groupadd -g 1000 php
+RUN useradd -g php -u 1000 php
+USER php
+ENTRYPOINT ["php-fpm","-F"]

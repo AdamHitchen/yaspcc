@@ -52,9 +52,13 @@ class SymfonyRouter implements RouterInterface
 
         $matcher = $this->getMatcher();
         $match = $matcher->match($request->getPathInfo());
-        $result = call_user_func([
-            $this->container->make($match["_controller"][0]),
-            $match["_controller"][1]
+
+        $controllerClass = $match["_controller"][0];
+        $controllerFunction = $match["_controller"][1];
+        array_shift($match);
+        $result = call_user_func_array([
+            $this->container->make($controllerClass),
+            $controllerFunction
         ],$match);
 
     }

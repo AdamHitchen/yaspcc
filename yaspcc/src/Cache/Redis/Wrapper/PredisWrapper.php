@@ -43,7 +43,7 @@ class PredisWrapper implements RedisClientInterface
      * @param string $value
      * @param null $expire
      */
-    public function set(string $key, string $value, $expire = null)
+    public function set(string $key, $value, $expire = null)
     {
         $this->client->set($key,$value);
         if(!empty($expire)) {

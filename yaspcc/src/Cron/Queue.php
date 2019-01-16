@@ -25,7 +25,7 @@ class Queue
     private $logger;
 
     /**
-     * Queue constructor.
+     * QueueTest constructor.
      * @param GameRepository $gameRepository
      * @param KeyValueCacheInterface $cache
      * @param LoggerInterface $logger
@@ -48,8 +48,10 @@ class Queue
             $queue = $this->gameRepository->getAllApps();
             $applist = $queue["applist"]["apps"];
         }
-        for ($i = 0; $i < 150; $i++) {
+        $applistCount = count($applist);
+        for ($i = 0; $i < min(150,$applistCount); $i++) {
             $app = array_pop($applist);
+            //This call may be redundant - remove if so
             if ($this->cache->exists("game:" . $app["appid"])) {
                 continue;
             }
