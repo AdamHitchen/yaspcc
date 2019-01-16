@@ -41,8 +41,7 @@ class ProfileController
 
     /**
      * ProfileController constructor.
-     * @param SteamService $steamService
-     * @param RatingServiceInterface $ratingService
+     * @param ProfileRatingRequest $profileRatingRequest
      */
     public function __construct(ProfileRatingRequest $profileRatingRequest)
     {
