@@ -19,7 +19,7 @@ class ProfileController
     {
 
         $response = new Response();
-        $response->headers->set('Content-Type','application/json');
+        $response->headers->set('Content-Type', 'application/json');
         try {
             $profileRatings = $this->profileRatingRequest->getProfileRatings($id);
         } catch (GuzzleException $e) {

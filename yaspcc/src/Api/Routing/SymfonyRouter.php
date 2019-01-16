@@ -59,7 +59,7 @@ class SymfonyRouter implements RouterInterface
         $result = call_user_func_array([
             $this->container->make($controllerClass),
             $controllerFunction
-        ],$match);
+        ], $match);
 
     }
 

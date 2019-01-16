@@ -29,8 +29,8 @@ final class SymfonyRouteConfig
     {
         $routes = $this->routeCollection;
         $prefix = 'api/v1/';
-        $routes->add('', new Route($prefix.'profile/{id}',[
-           '_controller' => [ProfileController::class, 'list']
+        $routes->add('', new Route($prefix . 'profile/{id}', [
+            '_controller' => [ProfileController::class, 'list']
         ]));
     }
 
