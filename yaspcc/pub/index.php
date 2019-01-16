@@ -7,6 +7,6 @@ const ROOT_DIR = __DIR__ . '/../';
 $container = include __DIR__ . '/../config/bootstrap.php';
 
 // Match routes
-/** @var \Yaspcc\Routing\RouterInterface $router */
+/** @var \Yaspcc\Api\Routing\RouterInterface $router */
 $router = $container->get(Yaspcc\Api\Routing\RouterInterface::class);
 $router->match();
