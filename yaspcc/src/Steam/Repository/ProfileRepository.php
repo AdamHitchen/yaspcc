@@ -4,7 +4,6 @@ namespace Yaspcc\Steam\Repository;
 
 use Yaspcc\Cache\KeyValueCacheInterface;
 use Yaspcc\Steam\Entity\User\Profile;
-#use Yaspcc\Steam\Entity\User\Game;
 use Yaspcc\Steam\Exception\UserNotFoundException;
 use Yaspcc\Steam\Request\ProfileRequest;
 
@@ -31,8 +30,10 @@ class ProfileRepository
     }
 
     /**
-     * @param $id
-     * @return Game
+     * @param string $id
+     * @return Profile
+     * @throws UserNotFoundException
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function get(string $id): Profile
     {
@@ -46,7 +47,7 @@ class ProfileRepository
 
         if (!empty($profile)) {
             return $profile;
-        } else if(!empty($json)) {
+        } elseif (!empty($json)) {
             return $this->createProfileFromJson($json);
 
         } else {
@@ -58,25 +59,24 @@ class ProfileRepository
 
     /**
      * @param string $json
-     * @return Game
+     * @return Profile
      */
     private function createProfileFromJson(string $json): Profile
     {
-        //TODO: implement createGameFromJson()
         $profileObj = json_decode($json);
         $profile = new Profile($profileObj->userId);
         return $profile->fromJson($profileObj);
     }
 
     /**
-     * @param $id
+     * @param Profile $profile
      */
     public function set(Profile $profile)
     {
         $this->cache->set("profile:" . $profile->userId, json_encode($profile));
 
-        if(!empty($profile->username)) {
-            $this->cache->set("profile:" . $profile->username, json_encode($profile) );
+        if (!empty($profile->username)) {
+            $this->cache->set("profile:" . $profile->username, json_encode($profile));
         }
     }
 }
