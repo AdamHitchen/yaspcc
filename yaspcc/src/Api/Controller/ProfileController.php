@@ -21,13 +21,13 @@ class ProfileController
         $response->headers->set('Content-Type', 'application/json');
         try {
             $profileRatings = $this->profileRatingRequest->getProfileRatings($id);
-        } catch (GuzzleException $e) {
-            $response->setStatusCode(500)
-                ->setContent('{"error" : "Something went wrong while contacting the server" }');
-            return $response;
         } catch (UserNotFoundException $e) {
             $response->setStatusCode(400)
                 ->setContent('{"error" : "Steam profile not found. Please check your profile is public" }');
+            return $response;
+        } catch (\throwable $e) {
+            $response->setStatusCode(500)
+                ->setContent('{"error" : "Something went wrong while contacting the server" }');
             return $response;
         }
 
