@@ -4,9 +4,9 @@ namespace Yaspcc\Cache;
 
 interface CacheServiceInterface
 {
-    function set(string $key, $value, $expire = null);
+    function set(string $key, $value, $expire = null) : void;
 
-    function get(string $key);
+    function get(string $key) : string;
 
     function exists(string $key): bool;
 }

@@ -30,7 +30,7 @@ class RedisService implements CacheServiceInterface
      * @param string $value
      * @param null $expire
      */
-    public function set(string $key, $value, $expire = null)
+    public function set(string $key, $value, $expire = null) : void
     {
         $this->redisClient->set($key,$value,$expire);
     }
