@@ -2,7 +2,7 @@
 
 namespace Yaspcc\Steam\Repository;
 
-use Yaspcc\Cache\KeyValueCacheInterface;
+use Yaspcc\Cache\CacheServiceInterface;
 use Yaspcc\Steam\Entity\User\Profile;
 use Yaspcc\Steam\Exception\UserNotFoundException;
 use Yaspcc\Steam\Request\ProfileRequest;
@@ -10,7 +10,7 @@ use Yaspcc\Steam\Request\ProfileRequest;
 class ProfileRepository
 {
     /**
-     * @var KeyValueCacheInterface
+     * @var CacheServiceInterface
      */
     private $cache;
     /**
@@ -20,10 +20,10 @@ class ProfileRepository
 
     /**
      * GameRepository constructor.
-     * @param KeyValueCacheInterface $cache
+     * @param CacheServiceInterface $cache
      * @param ProfileRequest $profileRequest
      */
-    public function __construct(KeyValueCacheInterface $cache, ProfileRequest $profileRequest)
+    public function __construct(CacheServiceInterface $cache, ProfileRequest $profileRequest)
     {
         $this->cache = $cache;
         $this->profileRequest = $profileRequest;

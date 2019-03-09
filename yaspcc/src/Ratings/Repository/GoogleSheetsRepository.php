@@ -2,7 +2,7 @@
 
 namespace Yaspcc\Ratings\Repository;
 
-use Yaspcc\Cache\KeyValueCacheInterface;
+use Yaspcc\Cache\CacheServiceInterface;
 use Yaspcc\Ratings\Entity\Submission;
 use Yaspcc\Ratings\Wrapper\GoogleSheets;
 
@@ -13,18 +13,18 @@ class GoogleSheetsRepository
      */
     private $sheets;
     /**
-     * @var KeyValueCacheInterface
+     * @var CacheServiceInterface
      */
     private $cache;
 
     /**
      * GoogleSheetsRepository constructor.
      * @param GoogleSheets $sheets
-     * @param KeyValueCacheInterface $cache
+     * @param CacheServiceInterface $cache
      */
     public function __construct(
         GoogleSheets $sheets,
-        KeyValueCacheInterface $cache
+        CacheServiceInterface $cache
     ) {
         $this->sheets = $sheets;
         $this->cache = $cache;

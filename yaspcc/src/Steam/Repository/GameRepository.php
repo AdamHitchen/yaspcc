@@ -2,7 +2,7 @@
 
 namespace Yaspcc\Steam\Repository;
 
-use Yaspcc\Cache\KeyValueCacheInterface;
+use Yaspcc\Cache\CacheServiceInterface;
 use Yaspcc\Steam\Entity\Game;
 use Yaspcc\Steam\Exception\ApiLimitExceededException;
 use Yaspcc\Steam\Exception\GameNotFoundException;
@@ -11,7 +11,7 @@ use Yaspcc\Steam\Request\GameRequest;
 class GameRepository
 {
     /**
-     * @var KeyValueCacheInterface
+     * @var CacheServiceInterface
      */
     private $cache;
     /**
@@ -21,10 +21,10 @@ class GameRepository
 
     /**
      * GameRepository constructor.
-     * @param KeyValueCacheInterface $cache
+     * @param CacheServiceInterface $cache
      * @param GameRequest $gameRequest
      */
-    public function __construct(KeyValueCacheInterface $cache, GameRequest $gameRequest)
+    public function __construct(CacheServiceInterface $cache, GameRequest $gameRequest)
     {
         $this->cache = $cache;
         $this->gameRequest = $gameRequest;

@@ -3,7 +3,7 @@
 namespace Yaspcc\Api;
 
 use Psr\Log\LoggerInterface;
-use Yaspcc\Cache\KeyValueCacheInterface;
+use Yaspcc\Cache\CacheServiceInterface;
 use Yaspcc\Ratings\Service\RatingServiceInterface;
 use Yaspcc\Steam\Entity\User\Game;
 use Yaspcc\Steam\Entity\User\Profile;
@@ -16,7 +16,7 @@ class ProfileRatingRequest
      */
     private $steamService;
     /**
-     * @var KeyValueCacheInterface
+     * @var CacheServiceInterface
      */
     private $cache;
     /**
@@ -31,13 +31,13 @@ class ProfileRatingRequest
     /**
      * ProfileRatingRequest constructor.
      * @param SteamService $steamService
-     * @param KeyValueCacheInterface $cache
+     * @param CacheServiceInterface $cache
      * @param LoggerInterface $logger
      * @param RatingServiceInterface $ratingService
      */
     public function __construct(
         SteamService $steamService,
-        KeyValueCacheInterface $cache,
+        CacheServiceInterface $cache,
         LoggerInterface $logger,
         RatingServiceInterface $ratingService
     ) {

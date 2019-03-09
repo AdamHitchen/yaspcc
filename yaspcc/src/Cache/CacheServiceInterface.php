@@ -2,7 +2,7 @@
 
 namespace Yaspcc\Cache;
 
-interface KeyValueCacheInterface
+interface CacheServiceInterface
 {
     function set(string $key, $value, $expire = null);
 

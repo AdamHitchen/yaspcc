@@ -3,10 +3,10 @@
 namespace Yaspcc\Cache\Redis\Wrapper;
 
 use Predis\Client;
-use Yaspcc\Cache\Redis\RedisClientInterface;
+use Yaspcc\Cache\Redis\RedisClientServiceInterface;
 use Yaspcc\Cache\Redis\Config\RedisConfig;
 
-class PredisWrapper implements RedisClientInterface
+class PredisWrapper implements RedisClientServiceInterface
 {
     /** @var RedisConfig */
     private $redisConfig;

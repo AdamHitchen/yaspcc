@@ -4,7 +4,7 @@ namespace Yaspcc\Cron;
 
 use GuzzleHttp\Exception\ClientException;
 use Psr\Log\LoggerInterface;
-use Yaspcc\Cache\KeyValueCacheInterface;
+use Yaspcc\Cache\CacheServiceInterface;
 use Yaspcc\Steam\Exception\ApiLimitExceededException;
 use Yaspcc\Steam\Exception\GameNotFoundException;
 use Yaspcc\Steam\Repository\GameRepository;
@@ -16,7 +16,7 @@ class Queue
      */
     private $gameRepository;
     /**
-     * @var KeyValueCacheInterface
+     * @var CacheServiceInterface
      */
     private $cache;
     /**
@@ -27,12 +27,12 @@ class Queue
     /**
      * QueueTest constructor.
      * @param GameRepository $gameRepository
-     * @param KeyValueCacheInterface $cache
+     * @param CacheServiceInterface $cache
      * @param LoggerInterface $logger
      */
     public function __construct(
         GameRepository $gameRepository,
-        KeyValueCacheInterface $cache,
+        CacheServiceInterface $cache,
         LoggerInterface $logger
     ) {
         $this->gameRepository = $gameRepository;
