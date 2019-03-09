@@ -10,7 +10,7 @@ use Symfony\Component\Yaml\Yaml;
  */
 class GoogleSheetsConfig
 {
-    const CONFIG_PATH = ROOT_DIR . "config/google.yaml";
+    const CONFIG_PATH = __DIR__ . "/config/google.yaml";
 
     /** @var string */
     private $spreadsheetId;
