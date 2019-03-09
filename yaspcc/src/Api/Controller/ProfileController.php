@@ -15,7 +15,7 @@ class ProfileController
      */
     private $profileRatingRequest;
 
-    public function list($id) : Response
+    public function list(string $id) : Response
     {
         $response = new Response();
         $response->headers->set('Content-Type', 'application/json');

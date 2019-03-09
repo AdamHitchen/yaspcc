@@ -25,7 +25,7 @@ final class SymfonyRouteConfig
         $this->configure();
     }
 
-    private function configure()
+    private function configure() : void
     {
         $routes = $this->routeCollection;
         $prefix = 'api/v1/';
@@ -34,7 +34,7 @@ final class SymfonyRouteConfig
         ]));
     }
 
-    public function getRoutes()
+    public function getRoutes() : RouteCollection
     {
         return $this->routeCollection;
     }

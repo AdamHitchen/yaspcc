@@ -53,7 +53,7 @@ class ProfileRatingRequest
      * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \Yaspcc\Steam\Exception\UserNotFoundException
      */
-    public function getProfileRatings($userId): string
+    public function getProfileRatings(string $userId): string
     {
         $profile = $this->steamService->getProfile($userId);
         $profileGames = $this->getProfileGames($profile);
