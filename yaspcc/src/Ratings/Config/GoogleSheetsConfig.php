@@ -17,7 +17,7 @@ class GoogleSheetsConfig
     /** @var string */
     private $cellRange;
     /** @var string */
-    private $authConfigPath = ROOT_DIR . "config/googlecreds.json";
+    private $authConfigPath = __DIR__ . "/config/googlecreds.json";
 
     /**
      * GoogleSheetsConfig constructor.
