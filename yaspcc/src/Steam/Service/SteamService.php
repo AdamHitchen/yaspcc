@@ -53,7 +53,7 @@ class SteamService
         try {
             $profile = $this->profileRepository->get($steamId);
         } catch (BadResponseException $exception) {
-            $this->logger->alert($exception->getMessage());
+            $this->logger->alert("Error while trying to get profile in SteamService: " . $exception->getMessage());
         }
 
         if (empty($profile)) {
