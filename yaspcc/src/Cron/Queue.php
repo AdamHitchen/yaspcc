@@ -40,7 +40,7 @@ class Queue
         $this->logger = $logger;
     }
 
-    public function processQueue()
+    public function processQueue() : void
     {
         if ($this->cache->exists("queue")) {
             $applist = json_decode($this->cache->get("queue"), true);

@@ -78,7 +78,7 @@ class GoogleSheetsRepository
     /**
      * @param array $array
      */
-    public function setIndividualRatings(array $array)
+    public function setIndividualRatings(array $array): void
     {
         foreach ($array as $key => $value) {
             $this->cache->set("rating:" . $key, json_encode($value));
@@ -89,7 +89,7 @@ class GoogleSheetsRepository
      * @param $gameId
      * @return mixed|null
      */
-    public function getRating($gameId)
+    public function getRating(int $gameId)
     {
         if($this->cache->exists("rating:".$gameId)) {
             return json_decode($this->cache->get("rating:".$gameId));
