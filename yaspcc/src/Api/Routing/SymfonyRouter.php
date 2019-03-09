@@ -4,6 +4,7 @@ namespace Yaspcc\Api\Routing;
 
 use DI\Container;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Matcher\UrlMatcher;
 use Symfony\Component\Routing\RequestContext;
 
@@ -56,11 +57,12 @@ class SymfonyRouter implements RouterInterface
         $controllerClass = $match["_controller"][0];
         $controllerFunction = $match["_controller"][1];
         array_shift($match);
-        $result = call_user_func_array([
+        /** @var Response $response */
+        $response = call_user_func_array([
             $this->container->make($controllerClass),
             $controllerFunction
         ], $match);
-
+        $response->send();
     }
 
     /**
