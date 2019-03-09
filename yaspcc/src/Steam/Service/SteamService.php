@@ -56,14 +56,14 @@ class SteamService
             $this->logger->alert("Error while trying to get profile in SteamService: " . $exception->getMessage());
         }
 
-        if (empty($profile)) {
+        if (!isset($profile)) {
             throw new UserNotFoundException("Unable to find User.");
         }
 
         return $profile;
     }
 
-    public function getIgnoreList()
+    public function getIgnoreList(): array
     {
         return $this->gameRepository->getIgnoreList();
     }

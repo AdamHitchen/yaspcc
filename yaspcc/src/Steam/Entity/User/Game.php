@@ -13,15 +13,15 @@ class Game
      */
     public $appid;
     /**
-     * @var int
+     * @var int|null
      */
     private $playtime;
 
 
     /**
      * Game constructor.
-     * @param string $appid
-     * @param string $playtime
+     * @param int $appid
+     * @param int|null $playtime
      */
     public function __construct(
         int $appid,
@@ -32,15 +32,15 @@ class Game
     }
 
     /**
-     * @return string
+     * @return int
      */
-    public function getPlaytime(): int
+    public function getPlaytime(): ?int
     {
         return $this->playtime;
     }
 
     /**
-     * @return string
+     * @return int
      */
     public function getAppid(): int
     {

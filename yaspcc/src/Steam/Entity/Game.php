@@ -16,7 +16,7 @@ class Game
     public $hasCompleteData;
     /** @var bool */
     public $isLinuxNative;
-    /** @var string */
+    /** @var string|null */
     public $imageUrl;
 
     /**

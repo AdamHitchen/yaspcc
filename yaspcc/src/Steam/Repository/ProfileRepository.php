@@ -71,7 +71,7 @@ class ProfileRepository
     /**
      * @param Profile $profile
      */
-    public function set(Profile $profile)
+    public function set(Profile $profile): void
     {
         $this->cache->set("profile:" . $profile->userId, json_encode($profile));
 
