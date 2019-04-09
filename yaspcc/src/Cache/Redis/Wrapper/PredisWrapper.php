@@ -3,10 +3,10 @@
 namespace Yaspcc\Cache\Redis\Wrapper;
 
 use Predis\Client;
-use Yaspcc\Cache\Redis\RedisClientInterface;
+use Yaspcc\Cache\Redis\RedisClientServiceInterface;
 use Yaspcc\Cache\Redis\Config\RedisConfig;
 
-class PredisWrapper implements RedisClientInterface
+class PredisWrapper implements RedisClientServiceInterface
 {
     /** @var RedisConfig */
     private $redisConfig;
@@ -43,7 +43,7 @@ class PredisWrapper implements RedisClientInterface
      * @param string $value
      * @param null $expire
      */
-    public function set(string $key, $value, $expire = null)
+    public function set(string $key, string $value, int $expire = null) : void
     {
         $this->client->set($key,$value);
         if(!empty($expire)) {

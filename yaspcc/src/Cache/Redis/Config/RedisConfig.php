@@ -16,8 +16,8 @@ class RedisConfig
     private $port;
     /** @var string */
     private $scheme;
-    /** @var string  */
-    const CONFIG_PATH = ROOT_DIR . "config/redis.yaml";
+    /** @var string */
+    const CONFIG_PATH = __DIR__ . "/config/redis.yaml";
 
     /**
      * RedisConfig constructor.
@@ -31,7 +31,7 @@ class RedisConfig
     /**
      * @param Yaml $yaml
      */
-    private function loadConfig(Yaml $yaml) : void
+    private function loadConfig(Yaml $yaml): void
     {
         $array = $yaml->parseFile($this::CONFIG_PATH);
         $this->host = $array["host"];
@@ -42,7 +42,7 @@ class RedisConfig
     /**
      * @return string
      */
-    public function getHost() : string
+    public function getHost(): string
     {
         return $this->host;
     }
@@ -50,7 +50,7 @@ class RedisConfig
     /**
      * @return int
      */
-    public function getPort() : int
+    public function getPort(): int
     {
         return $this->port;
     }
@@ -58,11 +58,9 @@ class RedisConfig
     /**
      * @return string
      */
-    public function getScheme() : string
+    public function getScheme(): string
     {
         return $this->scheme;
     }
-
-
 
 }

@@ -37,7 +37,7 @@ class ProfileRequest
     {
         $uid = $this->getIdByUsername($userId);
 
-        if(!empty($uid)) {
+        if (!empty($uid)) {
             $username = $userId;
             $userId = $uid;
         }
@@ -48,7 +48,7 @@ class ProfileRequest
         );
         $response = json_decode($result->getBody()->getContents());
 
-        $profile = (new Profile($userId))->fromRequestJson($response);
+        $profile = (new Profile((int) $userId))->fromRequestJson($response);
         $profile->username = $username ?? null;
 
         return $profile;

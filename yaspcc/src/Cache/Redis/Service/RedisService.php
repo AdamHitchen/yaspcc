@@ -2,25 +2,25 @@
 
 namespace Yaspcc\Cache\Redis\Service;
 
-use Yaspcc\Cache\KeyValueCacheInterface;
-use Yaspcc\Cache\Redis\RedisClientInterface;
+use Yaspcc\Cache\CacheServiceInterface;
+use Yaspcc\Cache\Redis\RedisClientServiceInterface;
 
 /**
  * Class RedisService
  * @package Yaspcc\Cache\Redis\Service
  */
-class RedisService implements KeyValueCacheInterface
+class RedisService implements CacheServiceInterface
 {
     /**
-     * @var RedisClientInterface
+     * @var RedisClientServiceInterface
      */
     private $redisClient;
 
     /**
      * RedisService constructor.
-     * @param RedisClientInterface $redisClient
+     * @param RedisClientServiceInterface $redisClient
      */
-    public function __construct(RedisClientInterface $redisClient)
+    public function __construct(RedisClientServiceInterface $redisClient)
     {
         $this->redisClient = $redisClient;
     }
@@ -30,7 +30,7 @@ class RedisService implements KeyValueCacheInterface
      * @param string $value
      * @param null $expire
      */
-    public function set(string $key, $value, $expire = null)
+    public function set(string $key, string $value, int $expire = null) : void
     {
         $this->redisClient->set($key,$value,$expire);
     }

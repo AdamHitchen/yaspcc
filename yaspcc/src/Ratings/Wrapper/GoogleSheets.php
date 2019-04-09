@@ -16,8 +16,12 @@ class GoogleSheets
     private $client;
     /** @var \Google_Service_Sheets */
     private $sheet;
+
     /**
      * GoogleSheets constructor.
+     * @param Config $config
+     * @param \Google_Client $client
+     * @throws \Google_Exception
      */
     public function __construct(
         Config $config,
@@ -31,7 +35,7 @@ class GoogleSheets
     /**
      * @throws \Google_Exception
      */
-    private function initializeClient()
+    private function initializeClient():void
     {
         $this->client->setApplicationName("Yaspcc");
         $this->client->setScopes([\Google_Service_Sheets::SPREADSHEETS]);

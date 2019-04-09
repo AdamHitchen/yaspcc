@@ -11,7 +11,7 @@ use Symfony\Component\Yaml\Yaml;
 class Config
 {
 
-    const CONFIG_PATH = ROOT_DIR . "config/steam.yaml";
+    const CONFIG_PATH = __DIR__ . "/config/steam.yaml";
 
     /** @var string */
     private $apiKey;

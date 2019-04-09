@@ -5,7 +5,7 @@ namespace Yaspcc\Tests\Cron;
 use Mockery;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
-use Yaspcc\Cache\KeyValueCacheInterface;
+use Yaspcc\Cache\CacheServiceInterface;
 use Yaspcc\Cron\Queue;
 use Yaspcc\Steam\Entity\Game;
 use Yaspcc\Steam\Exception\ApiLimitExceededException;
@@ -23,7 +23,7 @@ class QueueTest extends \PHPUnit\Framework\TestCase
     {
         parent::setUp();
         $this->gameRepository = Mockery::mock(GameRepository::class);
-        $this->cache = Mockery::mock(KeyValueCacheInterface::class);
+        $this->cache = Mockery::mock(CacheServiceInterface::class);
         $this->logger = Mockery::mock(LoggerInterface::class);
     }
 
@@ -121,7 +121,7 @@ class QueueTest extends \PHPUnit\Framework\TestCase
         $games = $this->getExampleGames();
         $this->gameRepository->shouldReceive('get')->with($games[0]->id)->andReturn($games[0]);
         $this->gameRepository->shouldReceive('get')->with($games[1]->id)->andThrow(ApiLimitExceededException::class);
-        $this->cache = Mockery::mock(KeyValueCacheInterface::class);
+        $this->cache = Mockery::mock(CacheServiceInterface::class);
         $this->cache->shouldReceive('exists')->with('queue')->andReturn(true);
         $this->cache->shouldReceive('get')
             ->with('queue')
@@ -148,7 +148,7 @@ class QueueTest extends \PHPUnit\Framework\TestCase
         $games = $this->getExampleGames();
         $this->gameRepository->shouldReceive('get')->with($games[0]->id)->andReturn($games[0]);
         $this->gameRepository->shouldReceive('get')->with($games[1]->id)->andThrow(GameNotFoundException::class);
-        $this->cache = Mockery::mock(KeyValueCacheInterface::class);
+        $this->cache = Mockery::mock(CacheServiceInterface::class);
         $this->cache->shouldReceive('exists')->with('queue')->andReturn(true);
         $this->cache->shouldReceive('get')
             ->with('queue')

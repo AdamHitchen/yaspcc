@@ -19,8 +19,8 @@ try {
 
     $container->set(\Psr\Log\LoggerInterface::class, $monolog);
     $container->set(\Yaspcc\Api\Routing\RouterInterface::class, $container->make(\Yaspcc\Api\Routing\SymfonyRouter::class));
-    $container->set(\Yaspcc\Cache\Redis\RedisClientInterface::class, $container->make(\Yaspcc\Cache\Redis\Wrapper\PredisWrapper::class));
-    $container->set(\Yaspcc\Cache\KeyValueCacheInterface::class, $container->make(\Yaspcc\Cache\Redis\Service\RedisService::class));
+    $container->set(\Yaspcc\Cache\Redis\RedisClientServiceInterface::class, $container->make(\Yaspcc\Cache\Redis\Wrapper\PredisWrapper::class));
+    $container->set(\Yaspcc\Cache\CacheServiceInterface::class, $container->make(\Yaspcc\Cache\Redis\Service\RedisService::class));
     $container->set(\Yaspcc\Ratings\Service\RatingServiceInterface::class, $container->make(\Yaspcc\Ratings\Service\GoogleSheetsService::class));
 
     return $container;

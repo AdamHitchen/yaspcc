@@ -53,17 +53,17 @@ class SteamService
         try {
             $profile = $this->profileRepository->get($steamId);
         } catch (BadResponseException $exception) {
-            $this->logger->alert($exception->getMessage());
+            $this->logger->alert("Error while trying to get profile in SteamService: " . $exception->getMessage());
         }
 
-        if (empty($profile)) {
+        if (!isset($profile)) {
             throw new UserNotFoundException("Unable to find User.");
         }
 
         return $profile;
     }
 
-    public function getIgnoreList()
+    public function getIgnoreList(): array
     {
         return $this->gameRepository->getIgnoreList();
     }
@@ -75,7 +75,7 @@ class SteamService
      * @throws \Yaspcc\Steam\Exception\GameNotFoundException
      * @throws \Yaspcc\Steam\Exception\NoGameDataException
      */
-    public function getGame(int $gameId) : Game
+    public function getGame(int $gameId): Game
     {
         return $this->gameRepository->get($gameId);
     }

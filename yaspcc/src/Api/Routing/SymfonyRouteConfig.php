@@ -25,16 +25,16 @@ final class SymfonyRouteConfig
         $this->configure();
     }
 
-    private function configure()
+    private function configure() : void
     {
         $routes = $this->routeCollection;
         $prefix = 'api/v1/';
-        $routes->add('', new Route($prefix.'profile/{id}',[
-           '_controller' => [ProfileController::class, 'list']
+        $routes->add('', new Route($prefix . 'profile/{id}', [
+            '_controller' => [ProfileController::class, 'list']
         ]));
     }
 
-    public function getRoutes()
+    public function getRoutes() : RouteCollection
     {
         return $this->routeCollection;
     }

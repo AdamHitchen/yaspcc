@@ -4,13 +4,35 @@ namespace Yaspcc\Ratings\Entity;
 
 class Submission
 {
-    public $submitDate;
-    public $rating;
-    public $status;
-    public $notes;
-    public $distro;
-    public $driver;
-    public $specs;
+    /**
+     * @var string
+     */
+    private $submitDate;
+    /**
+     * @var string
+     */
+    private $rating;
+    /**
+     * @var string
+     */
+    private $status;
+    /**
+     * @var string|null
+     */
+    private $notes;
+    /**
+     * @var string|null
+     */
+    private $distro;
+    /**
+     * @var string|null
+     */
+    private $driver;
+    /**
+     * @var string|null
+     */
+    private $specs;
+
 
     /**
      * Submission constructor.
@@ -23,14 +45,15 @@ class Submission
      * @param $specs
      */
     public function __construct(
-        $submitDate,
-        $rating,
-        $status,
-        $notes = null,
-        $distro = null,
-        $driver = null,
-        $specs = null
+        string $submitDate,
+        string $rating,
+        string $status,
+        ?string $notes = null,
+        ?string $distro = null,
+        ?string $driver = null,
+        ?string $specs = null
     ) {
+
         $this->submitDate = $submitDate;
         $this->rating = $rating;
         $this->status = $status;

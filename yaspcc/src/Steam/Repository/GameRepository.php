@@ -2,7 +2,7 @@
 
 namespace Yaspcc\Steam\Repository;
 
-use Yaspcc\Cache\KeyValueCacheInterface;
+use Yaspcc\Cache\CacheServiceInterface;
 use Yaspcc\Steam\Entity\Game;
 use Yaspcc\Steam\Exception\ApiLimitExceededException;
 use Yaspcc\Steam\Exception\GameNotFoundException;
@@ -11,7 +11,7 @@ use Yaspcc\Steam\Request\GameRequest;
 class GameRepository
 {
     /**
-     * @var KeyValueCacheInterface
+     * @var CacheServiceInterface
      */
     private $cache;
     /**
@@ -21,10 +21,10 @@ class GameRepository
 
     /**
      * GameRepository constructor.
-     * @param KeyValueCacheInterface $cache
+     * @param CacheServiceInterface $cache
      * @param GameRequest $gameRequest
      */
-    public function __construct(KeyValueCacheInterface $cache, GameRequest $gameRequest)
+    public function __construct(CacheServiceInterface $cache, GameRequest $gameRequest)
     {
         $this->cache = $cache;
         $this->gameRequest = $gameRequest;
@@ -53,12 +53,12 @@ class GameRepository
             }
         }
 
-        if(empty($json)){
-            if(empty($game)) {
+        if (empty($json)) {
+            if (empty($game)) {
                 $this->addIgnoredId($id);
-            } else if (!$game->isComplete()) {
+            } elseif (!$game->isComplete()) {
                 $this->addToQueue($id);
-            } else if ($game->isComplete()) {
+            } elseif ($game->isComplete()) {
                 return $game;
             }
 
@@ -85,8 +85,8 @@ class GameRepository
      */
     public function getIgnoreList(): array
     {
-        if($this->cache->exists("game:ignore")){
-            return json_decode($this->cache->get("game:ignore"),true);
+        if ($this->cache->exists("game:ignore")) {
+            return json_decode($this->cache->get("game:ignore"), true);
         }
 
         return [];
@@ -95,7 +95,7 @@ class GameRepository
     /**
      * @param int $gameId
      */
-    private function addIgnoredId(int $gameId)
+    private function addIgnoredId(int $gameId): void
     {
         if ($this->cache->exists("game:ignore")) {
             $arr = json_decode($this->cache->get("game:ignore"), true);
@@ -109,10 +109,10 @@ class GameRepository
     /**
      * @param $id
      */
-    public function set(Game $game)
+    public function set(Game $game): void
     {
         if (!$game->isComplete()) {
-            $this->addToQueue($game);
+            $this->addToQueue($game->id);
         }
 
         $this->cache->set("game:" . $game->id, json_encode($game));
@@ -129,8 +129,8 @@ class GameRepository
     /**
      * @param $id
      */
-    private function addToQueue($id)
+    private function addToQueue(int $id): void
     {
-        $this->cache->set("queue:game:" . $id, $id);
+        $this->cache->set("queue:game:" . $id, (string) $id);
     }
 }

@@ -10,14 +10,14 @@ class Profile
     public $games;
     /** @var */
     public $date;
-    /** @var string */
+    /** @var string|null */
     public $username;
 
     /**
      * Profile constructor.
      * @param $userId
      */
-    public function __construct($userId)
+    public function __construct(int $userId)
     {
         $this->userId = $userId;
         $this->games = [];
