@@ -15,7 +15,7 @@ class Game
     /**
      * @var int|null
      */
-    private $playtime;
+    public $playtime;
 
 
     /**
