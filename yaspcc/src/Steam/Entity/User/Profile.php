@@ -30,7 +30,7 @@ class Profile
     public function fromRequestJson(\stdClass $response): Profile
     {
         foreach ($response->response->games as $game) {
-            $this->games[] = new Game($game->appid, $game->playtime_forever);
+            $this->games[$game->appid] = new Game($game->appid, $game->playtime_forever);
         }
 
         return $this;
@@ -43,7 +43,7 @@ class Profile
     public function fromJson(\stdClass $response): Profile
     {
         foreach ($response->games as $game) {
-            $this->games[] = new Game($game->appid, $game->playtime_forever ?? 0);
+            $this->games[$game->appid] = new Game($game->appid, $game->playtime_forever ?? 0);
         }
 
         return $this;
