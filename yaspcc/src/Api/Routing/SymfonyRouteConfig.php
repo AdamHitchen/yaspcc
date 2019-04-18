@@ -32,6 +32,10 @@ final class SymfonyRouteConfig
         $routes->add('', new Route($prefix . 'profile/{id}', [
             '_controller' => [ProfileController::class, 'list']
         ]));
+
+        $routes->add('compare', new Route($prefix . 'profiles/{ids}', [
+            '_controller' => [ProfileController::class, 'compare']
+        ], ['ids' => '.+']));
     }
 
     public function getRoutes() : RouteCollection
