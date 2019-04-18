@@ -86,7 +86,7 @@ class ProfileRatingRequest
     private function getProfileGames(Profile $profile): array
     {
         $games = [];
-        $ignored = $this->steamService->getIgnoreList();
+        $ignored = $this->steamService->getIgnoredGames();
         /** @var Game $game */
         foreach($profile->games as $game) {
             if(!in_array($game->appid,$ignored)) {
