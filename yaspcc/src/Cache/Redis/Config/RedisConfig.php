@@ -18,6 +18,8 @@ class RedisConfig
     private $scheme;
     /** @var string */
     const CONFIG_PATH = __DIR__ . "/config/redis.yaml";
+    /** @var string */
+    private $password;
 
     /**
      * RedisConfig constructor.
@@ -37,6 +39,12 @@ class RedisConfig
         $this->host = $array["host"];
         $this->port = $array["port"];
         $this->scheme = $array["scheme"];
+        $this->password = $array["password"];
+    }
+
+    public function getPassword(): string
+    {
+        return $this->password;
     }
 
     /**

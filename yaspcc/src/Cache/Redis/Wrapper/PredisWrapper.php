@@ -32,7 +32,8 @@ class PredisWrapper implements RedisClientServiceInterface
         $client = new Client([
             'scheme' => $redisConfig->getScheme(),
             'host' => $redisConfig->getHost(),
-            'port' => $redisConfig->getPort()
+            'port' => $redisConfig->getPort(),
+            'password' => $redisConfig->getPassword()
         ]);
         $client->connect();
         return $client;
