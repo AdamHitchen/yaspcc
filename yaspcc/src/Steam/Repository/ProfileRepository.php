@@ -40,7 +40,6 @@ class ProfileRepository
         if ($this->cache->exists("profile:" . $id)) {
             $json = $this->cache->get("profile:" . $id);
         } else {
-
             $profile = $this->profileRequest->getUserProfile($id);
             $this->set($profile);
         }
@@ -49,7 +48,6 @@ class ProfileRepository
             return $profile;
         } elseif (!empty($json)) {
             return $this->createProfileFromJson($json);
-
         } else {
             throw new UserNotFoundException();
         }

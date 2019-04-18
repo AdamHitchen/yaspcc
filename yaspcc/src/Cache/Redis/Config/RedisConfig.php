@@ -17,9 +17,10 @@ class RedisConfig
     /** @var string */
     private $scheme;
     /** @var string */
-    const CONFIG_PATH = __DIR__ . "/config/redis.yaml";
+    const CONFIG_PATH = __DIR__ . "/../../../../config/redis.yaml";
     /** @var string */
     private $password;
+
 
     /**
      * RedisConfig constructor.
