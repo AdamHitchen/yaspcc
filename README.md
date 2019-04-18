@@ -1,6 +1,4 @@
-# yaspcc
-
-Yet Another Steam Play Compatibility Checker
+# Yet Another Steam Play Compatibility Checker
 
 Pulls data from https://docs.google.com/spreadsheets/d/1DcZZQ4HL_Ol969UbXJmFG8TzOHNnHoj8Q1f8DIFe8-8
 and steam to provide user ratings and game info for games you own.
