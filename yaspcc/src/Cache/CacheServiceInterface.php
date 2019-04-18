@@ -6,7 +6,13 @@ interface CacheServiceInterface
 {
     function set(string $key, string $value, int $expire = null) : void;
 
-    function get(string $key) : string;
+    function get(string $key) : ?string;
 
     function exists(string $key): bool;
+
+    /**
+     * @param string[] $keys
+     * @return string[]
+     */
+    function getMany(array $keys): array;
 }

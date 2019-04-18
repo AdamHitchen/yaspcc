@@ -39,7 +39,7 @@ class RedisService implements CacheServiceInterface
      * @param string $key
      * @return string
      */
-    public function get(string $key): string
+    public function get(string $key): ?string
     {
         return $this->redisClient->get($key);
     }
@@ -51,5 +51,14 @@ class RedisService implements CacheServiceInterface
     public function exists(string $key): bool
     {
         return $this->redisClient->exists($key);
+    }
+
+    /**
+     * @param string[] $keys
+     * @return string[]
+     */
+    function getMany(array $keys): array
+    {
+        return $this->redisClient->getMany($keys);
     }
 }
