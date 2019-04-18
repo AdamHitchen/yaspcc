@@ -18,16 +18,22 @@ class GameRepository
      * @var GameRequest
      */
     private $gameRequest;
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
 
     /**
      * GameRepository constructor.
      * @param CacheServiceInterface $cache
      * @param GameRequest $gameRequest
+     * @param LoggerInterface $logger
      */
-    public function __construct(CacheServiceInterface $cache, GameRequest $gameRequest)
+    public function __construct(CacheServiceInterface $cache, GameRequest $gameRequest, LoggerInterface $logger)
     {
         $this->cache = $cache;
         $this->gameRequest = $gameRequest;
+        $this->logger = $logger;
     }
 
     /**
@@ -74,7 +80,6 @@ class GameRepository
      */
     private function createGameFromJson(string $json): Game
     {
-        //TODO: implement createGameFromJson()
         $gameObj = json_decode($json);
         $game = new Game($gameObj->name, $gameObj->id);
         return $game->fromJson($gameObj);
@@ -127,10 +132,43 @@ class GameRepository
     }
 
     /**
+     * @param array $gameIds
+     * @return array
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function getMany(array $gameIds): array
+    {
+        $keys = [];
+        foreach ($gameIds as $gameId) {
+            $keys[] = "game:" . $gameId;
+        }
+        $gamesJson = $this->cache->getMany($keys);
+        $games = [];
+        foreach ($gamesJson as $key => &$game) {
+            if (is_null($game)) {
+                try {
+                    $game = $this->get((int)str_replace("game:", "", $keys[$key]));
+                    if (is_null($game)) {
+                        unset($gamesJson[$key]);
+                        continue;
+                    }
+                } catch (\Throwable $e) {
+                    $this->logger->error("Error while fetching game: " . $e->getMessage());
+                }
+            } else {
+                $game = $this->createGameFromJson($game);
+            }
+
+            $games[$game->id] = $game;
+        }
+        return $games;
+    }
+
+    /**
      * @param $id
      */
     private function addToQueue(int $id): void
     {
-        $this->cache->set("queue:game:" . $id, (string) $id);
+        $this->cache->set("queue:game:" . $id, (string)$id);
     }
 }
