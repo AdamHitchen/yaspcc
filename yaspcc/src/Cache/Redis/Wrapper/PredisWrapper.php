@@ -32,7 +32,8 @@ class PredisWrapper implements RedisClientServiceInterface
         $client = new Client([
             'scheme' => $redisConfig->getScheme(),
             'host' => $redisConfig->getHost(),
-            'port' => $redisConfig->getPort()
+            'port' => $redisConfig->getPort(),
+            'password' => $redisConfig->getPassword()
         ]);
         $client->connect();
         return $client;
@@ -55,7 +56,7 @@ class PredisWrapper implements RedisClientServiceInterface
      * @param string $key
      * @return string
      */
-    public function get(string $key): string
+    public function get(string $key): ?string
     {
         return $this->client->get($key);
     }
@@ -67,5 +68,14 @@ class PredisWrapper implements RedisClientServiceInterface
     public function exists(string $key): bool
     {
         return $this->client->exists($key) === 1;
+    }
+
+    /**
+     * @param string[] $keys
+     * @return string[]
+     */
+    public function getMany(array $keys): array
+    {
+        return $this->client->mget($keys);
     }
 }

@@ -63,9 +63,12 @@ class SteamService
         return $profile;
     }
 
-    public function getIgnoreList(): array
+    /**
+     * @return array
+     */
+    public function getIgnoredGames(): array
     {
-        return $this->gameRepository->getIgnoreList();
+        return $this->gameRepository->getIgnoredGames();
     }
 
     /**
@@ -78,6 +81,15 @@ class SteamService
     public function getGame(int $gameId): Game
     {
         return $this->gameRepository->get($gameId);
+    }
+
+    /**
+     * @param int[] $gameIds
+     * @return Game[]
+     */
+    public function getGames(array $gameIds): array
+    {
+        return $this->gameRepository->getMany($gameIds);
     }
 
 }

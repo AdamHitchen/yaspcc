@@ -31,6 +31,6 @@ services:
     image: redis
     volumes:
       - redis-data:/data
-    command: ["redis-server","--appendonly","yes"]
+    command: ["redis-server","--appendonly","yes","--requirepass",""]
 volumes:
   redis-data:
