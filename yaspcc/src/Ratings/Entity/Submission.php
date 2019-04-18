@@ -60,13 +60,19 @@ class Submission implements \JsonSerializable
 
     /**
      * Submission constructor.
-     * @param $submitDate
-     * @param $rating
-     * @param $status
-     * @param $notes
-     * @param $distro
-     * @param $driver
-     * @param $specs
+     * @param string $submitDate
+     * @param string $rating
+     * @param string $status
+     * @param string|null $notes
+     * @param string|null $distro
+     * @param string|null $driver
+     * @param string|null $specs
+     * @param string|null $protonVersion
+     * @param string|null $kernel
+     * @param string|null $cpu
+     * @param string|null $ram
+     * @param string|null $gpu
+     * @param string|null $duration
      */
     public function __construct(
         string $submitDate,
