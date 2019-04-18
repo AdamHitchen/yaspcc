@@ -18,6 +18,9 @@ class Game
     public $isLinuxNative;
     /** @var string|null */
     public $imageUrl;
+    /** @var bool */
+    public $isMultiplayer;
+
 
     /**
      * Game constructor.
@@ -50,13 +53,24 @@ class Game
         $this->hasCompleteData = true;
         $this->isLinuxNative = $objData->platforms->linux ?? false;
         $this->imageUrl = $objData->header_image;
+        $this->isMultiplayer = false;
 
+        if($objData->categories) {
+            foreach($objData->categories as $category) {
+                // Multi-player / Cross-Platform Multiplayer categories
+                if($category->id === 1 || $category->id == 27) {
+                    $this->isMultiplayer = true;
+                    break;
+                }
+            }
+        }
         return $this;
     }
 
     public function fromJson(\stdClass $jsonObj): Game
     {
         $this->isLinuxNative = $jsonObj->isLinuxNative;
+        $this->isMultiplayer = $jsonObj->isMultiplayer;
         $this->hasCompleteData = $jsonObj->hasCompleteData;
         $this->imageUrl = $jsonObj->imageUrl;
         return $this;
