@@ -63,15 +63,69 @@ class ProfileRatingRequest
     }
 
     /**
+     * @param array $userIds
+     * @return \Yaspcc\Steam\Entity\Game[]
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Yaspcc\Steam\Exception\UserNotFoundException
+     */
+    public function getCommonGames(array $userIds): array
+    {
+        if (count($userIds) < 2) {
+            throw new \Exception("Only one profile provided.");
+        }
+
+        /** @var Profile[] $profiles */
+        $profiles = [];
+
+        $smallestProfileCount = PHP_INT_MAX;
+        $smallestProfileId = 0;
+
+        foreach($userIds as $userId) {
+            $profiles[$userId]= $this->steamService->getProfile($userId);
+
+            //Get the smallest library so we can loop through fewer games.
+            if(count($profiles[$userId]->games) < $smallestProfileCount) {
+                $smallestProfileCount = count($profiles[$userId]->games);
+                $smallestProfileId = $userId;
+            }
+        }
+
+        $matches = [];
+        /** @var Game[] $games */
+        $games = $profiles[$smallestProfileId]->games;
+
+        foreach ($games as $game) {
+            foreach($profiles as $profile) {
+                if(!array_key_exists($game->appid, $profile->games)) {
+                    continue 2;
+                }
+            }
+
+            try {
+                //$matches[$game->getAppId()]= $this->steamService->getGame($game->getAppid());
+                $matches[$game->getAppId()]= $game->getAppid();
+            } catch (\throwable $t) {
+                $this->logger->alert("Game not found: " . $game->getAppid());
+            }
+        }
+
+        $results = $this->steamService->getGames($matches);
+
+
+        return $results;
+    }
+
+    /**
      * @param array $profileGames
      * @return array
      */
     private function getRatingMatches(array $profileGames): array
     {
         $matches = [];
-        foreach($profileGames as $game) {
+
+        foreach ($profileGames as $game) {
             $match = $this->ratingService->getGameRatings($game->id);
-            if(!empty($match)) {
+            if (!empty($match)) {
                 $matches[$game->id] = $match;
             }
         }
@@ -86,18 +140,18 @@ class ProfileRatingRequest
     private function getProfileGames(Profile $profile): array
     {
         $games = [];
-        $ignored = $this->steamService->getIgnoreList();
+        $ignored = $this->steamService->getIgnoredGames();
         /** @var Game $game */
-        foreach($profile->games as $game) {
-            if(!in_array($game->appid,$ignored)) {
+        foreach ($profile->games as $game) {
+            if (!in_array($game->appid, $ignored)) {
                 try {
-                    $games[]=$this->steamService->getGame($game->appid);
+                    $games[] = $this->steamService->getGame($game->appid);
                 } catch (\Exception $exception) {
                     $this->logger->alert("Game in user profile not found: " . $game->appid);
                 }
             }
         }
-        return  $games;
+        return $games;
     }
 
 }

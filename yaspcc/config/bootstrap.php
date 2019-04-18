@@ -21,11 +21,11 @@ try {
     $container->set(\Yaspcc\Api\Routing\RouterInterface::class, $container->make(\Yaspcc\Api\Routing\SymfonyRouter::class));
     $container->set(\Yaspcc\Cache\Redis\RedisClientServiceInterface::class, $container->make(\Yaspcc\Cache\Redis\Wrapper\PredisWrapper::class));
     $container->set(\Yaspcc\Cache\CacheServiceInterface::class, $container->make(\Yaspcc\Cache\Redis\Service\RedisService::class));
-    $container->set(\Yaspcc\Ratings\Service\RatingServiceInterface::class, $container->make(\Yaspcc\Ratings\Service\GoogleSheetsService::class));
+    $container->set(\Yaspcc\Ratings\Service\RatingServiceInterface::class, $container->make(\Yaspcc\Ratings\Service\ProtonDBService::class));
 
     return $container;
 
 } catch (\Exception $exception) {
-    $monolog->log($monolog::CRITICAL, "ERROR INITIALIZING APPLICATION " . $e->getMessage());
+    $monolog->log($monolog::CRITICAL, "ERROR INITIALIZING APPLICATION " . $exception->getMessage());
     throw $exception;
 }
