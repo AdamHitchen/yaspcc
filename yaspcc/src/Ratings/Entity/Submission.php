@@ -2,7 +2,7 @@
 
 namespace Yaspcc\Ratings\Entity;
 
-class Submission
+class Submission implements \JsonSerializable
 {
     /**
      * @var string
@@ -32,6 +32,30 @@ class Submission
      * @var string|null
      */
     private $specs;
+    /**
+     * @var string|null
+     */
+    private $protonVersion;
+    /**
+     * @var string|null
+     */
+    private $kernel;
+    /**
+     * @var string|null
+     */
+    private $cpu;
+    /**
+     * @var string|null
+     */
+    private $ram;
+    /**
+     * @var string|null
+     */
+    private $gpu;
+    /**
+     * @var string|null
+     */
+    private $duration;
 
 
     /**
@@ -51,7 +75,13 @@ class Submission
         ?string $notes = null,
         ?string $distro = null,
         ?string $driver = null,
-        ?string $specs = null
+        ?string $specs = null,
+        ?string $protonVersion = null,
+        ?string $kernel = null,
+        ?string $cpu = null,
+        ?string $ram = null,
+        ?string $gpu = null,
+        ?string $duration = null
     ) {
 
         $this->submitDate = $submitDate;
@@ -61,5 +91,16 @@ class Submission
         $this->distro = $distro;
         $this->driver = $driver;
         $this->specs = $specs;
+        $this->protonVersion = $protonVersion;
+        $this->kernel = $kernel;
+        $this->cpu = $cpu;
+        $this->ram = $ram;
+        $this->gpu = $gpu;
+        $this->duration = $duration;
+    }
+
+    public function jsonSerialize()
+    {
+        return get_object_vars($this);
     }
 }
