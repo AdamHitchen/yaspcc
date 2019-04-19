@@ -1,8 +1,9 @@
 # Yet Another Steam Play Compatibility Checker
 
-Pulls data from https://docs.google.com/spreadsheets/d/1DcZZQ4HL_Ol969UbXJmFG8TzOHNnHoj8Q1f8DIFe8-8
-and steam to provide user ratings and game info for games you own.
+Pulls user ratings from the data dumps provided by https://www.protondb.com/
+and game information from steam to provide user ratings and game info for games you own.
 
-As the spreadsheet is no longer maintained, going forward this project will have to use the data dumps provided by https://www.protondb.com/
+- View ratings for games you own
+- View common games between 2 or more people - filter by multiplayer only games, native only etc
 
-Planned features include comparing profiles to find common games between multiple users, and a frontend to actually use this... 
+Frontend coming soon™
