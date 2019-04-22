@@ -28,6 +28,16 @@ class ProtonDBService implements RatingServiceInterface
         return $this->repository->getAll();
     }
 
+    public function matchGamesToRatings(array $games, array $ratings): array
+    {
+        $gameRatings = [];
+        foreach($games as $game) {
+            $gameRatings[$game->id] =  ["info" => $games[$game->id], "ratings" => $ratings[$game->id] ?? []];
+        }
+
+        return $gameRatings;
+    }
+
     /**
      * @param Game[]|int[] $games
      * @return Submission[]

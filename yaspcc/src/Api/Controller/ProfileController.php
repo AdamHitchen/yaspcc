@@ -58,11 +58,8 @@ class ProfileController
             $matchedGames = $this->profileRatingRequest->getCommonGames($ids);
             $ratings = $this->ratingService->getRatingsByArray($matchedGames);
 
-            //TODO: Move this out of the controller
-            $gameRatings = [];
-            foreach($matchedGames as $game) {
-                $gameRatings[] =  ["Info" => $matchedGames[$game->id], "ratings" => $ratings[$game->id] ?? []];
-            }
+            $gameRatings = $this->ratingService->matchGamesToRatings($matchedGames, $ratings);
+
         } catch (UserNotFoundException $e) {
             $response->setStatusCode(400)
                 ->setContent('{"error" : "Steam profile not found. Please check your profile is public" }');
