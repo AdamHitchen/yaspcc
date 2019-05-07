@@ -32,7 +32,7 @@ class ProtonDBService implements RatingServiceInterface
     {
         $gameRatings = [];
         foreach($games as $game) {
-            $gameRatings[$game->id] =  ["info" => $games[$game->id], "ratings" => $ratings[$game->id] ?? []];
+            $gameRatings[] =  ["info" => $games[$game->id], "ratings" => $ratings[$game->id] ?? []];
         }
 
         return $gameRatings;
