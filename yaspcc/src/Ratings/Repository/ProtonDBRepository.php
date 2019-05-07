@@ -40,6 +40,10 @@ class ProtonDBRepository
         }
     }
 
+    /**
+     * @param array $gameIds
+     * @return Submissiona
+     */
     public function getRatings(array $gameIds): array
     {
         $keys = [];
@@ -121,10 +125,8 @@ class ProtonDBRepository
             }
 
             return $submissions;
-        } else if ($this->cache->exists("rating:timeout")) {
-            return null;
         }
 
-        return $this->getAll()[$gameId];
+        return null;
     }
 }
