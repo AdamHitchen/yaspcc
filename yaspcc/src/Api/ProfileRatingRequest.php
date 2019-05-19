@@ -57,9 +57,11 @@ class ProfileRatingRequest
     {
         $profile = $this->steamService->getProfile($userId);
         $profileGames = $this->getProfileGames($profile);
-        $matches = $this->getRatingMatches($profileGames);
 
-        return json_encode($matches);
+        $ratings = $this->ratingService->getRatingsByArray($profileGames);
+        $gamesRatings = $this->ratingService->matchGamesToRatings($profileGames, $ratings);
+
+        return json_encode($gamesRatings);
     }
 
     /**
@@ -139,19 +141,16 @@ class ProfileRatingRequest
      */
     private function getProfileGames(Profile $profile): array
     {
-        $games = [];
+        $gameIds = [];
         $ignored = $this->steamService->getIgnoredGames();
         /** @var Game $game */
         foreach ($profile->games as $game) {
-            if (!in_array($game->appid, $ignored)) {
-                try {
-                    $games[] = $this->steamService->getGame($game->appid);
-                } catch (\Exception $exception) {
-                    $this->logger->alert("Game in user profile not found: " . $game->appid);
-                }
+            if (!in_array($game->getAppid(), $ignored)) {
+                $gameIds[]= $game->getAppid();
             }
         }
-        return $games;
+
+        return $this->steamService->getGames($gameIds);
     }
 
 }

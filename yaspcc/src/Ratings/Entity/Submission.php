@@ -109,4 +109,12 @@ class Submission implements \JsonSerializable
     {
         return get_object_vars($this);
     }
+
+    /**
+     * @return string
+     */
+    public function getRating(): string
+    {
+        return $this->rating;
+    }
 }

@@ -107,7 +107,11 @@ class ProtonDBRepository
             $submissions = [];
 
             foreach($ratings as $rating) {
-                $rating = json_decode($rating);
+
+                if(is_string($rating)) {
+                    $rating = json_decode($rating);
+                }
+
                 $submissions[] = new Submission(
                     $rating->submitDate,
                     $rating->rating,
