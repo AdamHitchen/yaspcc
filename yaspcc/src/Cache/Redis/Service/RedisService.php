@@ -61,4 +61,9 @@ class RedisService implements CacheServiceInterface
     {
         return $this->redisClient->getMany($keys);
     }
+
+    function delete(array $keys): int
+    {
+        return $this->redisClient->delete($keys);
+    }
 }
