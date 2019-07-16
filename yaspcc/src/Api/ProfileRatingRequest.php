@@ -4,6 +4,7 @@ namespace Yaspcc\Api;
 
 use Psr\Log\LoggerInterface;
 use Yaspcc\Cache\CacheServiceInterface;
+use Yaspcc\Ratings\Exception\NoGamesException;
 use Yaspcc\Ratings\Service\RatingServiceInterface;
 use Yaspcc\Steam\Entity\User\Game;
 use Yaspcc\Steam\Entity\User\Profile;
@@ -95,6 +96,10 @@ class ProfileRatingRequest
         $matches = [];
         /** @var Game[] $games */
         $games = $profiles[$smallestProfileId]->games;
+
+        if($smallestProfileCount === 0) {
+            throw new NoGamesException(sprintf("User %s has no games or profile is hidden", $smallestProfileId));
+        }
 
         foreach ($games as $game) {
             foreach($profiles as $profile) {
