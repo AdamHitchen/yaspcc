@@ -85,6 +85,7 @@ class GameRepository
             } elseif (!$game->isComplete()) {
                 $this->addToQueue($id);
             } elseif ($game->isComplete()) {
+                $this->set($game);
                 return $game;
             }
 
