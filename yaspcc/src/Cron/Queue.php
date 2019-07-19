@@ -3,10 +3,12 @@
 namespace Yaspcc\Cron;
 
 use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Exception\GuzzleException;
 use Psr\Log\LoggerInterface;
 use Yaspcc\Cache\CacheServiceInterface;
 use Yaspcc\Steam\Exception\ApiLimitExceededException;
 use Yaspcc\Steam\Exception\GameNotFoundException;
+use Yaspcc\Steam\Exception\NoGameDataException;
 use Yaspcc\Steam\Repository\GameRepository;
 
 class Queue
@@ -64,6 +66,10 @@ class Queue
                 break;
             } catch (GameNotFoundException $exception) {
                 $this->logger->alert("Error while getting game: " . $app["appid"]);
+            } catch (GuzzleException $e) {
+                $this->logger->error("Encounted guzzle exception: " . $e->getMessage());
+            } catch (NoGameDataException $e) {
+                $this->logger->alert("Game has no data! " . $e->getMessage());
             }
         }
 
