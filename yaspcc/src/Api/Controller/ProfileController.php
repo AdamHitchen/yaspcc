@@ -5,7 +5,9 @@ namespace Yaspcc\Api\Controller;
 use GuzzleHttp\Exception\GuzzleException;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Yaspcc\Api\Error;
 use Yaspcc\Api\ProfileRatingRequest;
+use Yaspcc\Ratings\Exception\NoGamesException;
 use Yaspcc\Ratings\Service\RatingServiceInterface;
 use Yaspcc\Steam\Exception\UserNotFoundException;
 use Yaspcc\Steam\Service\SteamService;
@@ -55,7 +57,7 @@ class ProfileController
         try {
             [$matchedGames, $profiles] = $this->profileRatingRequest->getCommonGames($ids);
             $ratings = $this->ratingService->getRatingsByArray($matchedGames);
-            $gameRatings = $this->ratingService->matchGamesToRatings($matchedGames, $ratings);
+            $gameRatings = $this->ratingService->matchGamesToRatings($matchedGames, $ratings, $profiles);
 
         } catch (UserNotFoundException $e) {
             $response->setStatusCode(400)
