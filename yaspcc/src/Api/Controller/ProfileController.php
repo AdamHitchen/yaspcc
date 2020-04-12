@@ -53,7 +53,7 @@ class ProfileController
         $response->headers->set('Content-Type', 'application/json');
 
         try {
-            $matchedGames = $this->profileRatingRequest->getCommonGames($ids);
+            [$matchedGames, $profiles] = $this->profileRatingRequest->getCommonGames($ids);
             $ratings = $this->ratingService->getRatingsByArray($matchedGames);
             $gameRatings = $this->ratingService->matchGamesToRatings($matchedGames, $ratings);
 

@@ -118,8 +118,7 @@ class ProfileRatingRequest
 
         $results = $this->steamService->getGames($matches);
 
-
-        return $results;
+        return [$results, $profiles];
     }
 
     /**

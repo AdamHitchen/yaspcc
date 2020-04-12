@@ -5,6 +5,7 @@ namespace Yaspcc\Ratings\Service;
 use Yaspcc\Ratings\Entity\Submission;
 use Yaspcc\Ratings\Repository\ProtonDBRepository;
 use Yaspcc\Steam\Entity\Game;
+use Yaspcc\Steam\Entity\User\Profile;
 
 class ProtonDBService implements RatingServiceInterface
 {
@@ -37,11 +38,23 @@ class ProtonDBService implements RatingServiceInterface
         return $this->repository->getAll();
     }
 
-    public function matchGamesToRatings(array $games, array $ratings): array
+    /**
+     * @param array $games
+     * @param array $ratings
+     * @param Profile[] $profiles
+     * @return array
+     */
+    public function matchGamesToRatings(array $games, array $ratings, array $profiles): array
     {
         $gameRatings = [];
         foreach ($games as $game) {
-            $gameRatings[] = ["info" => $games[$game->id], "ratings" => $ratings[$game->id] ?? []];
+            $played = 0;
+            foreach ($profiles as $profile) {
+                if (!empty($profile->games[$game->id])) {
+                    $played += $profile->games[$game->id]->getPlaytime() ?? 0;
+                }
+            }
+            $gameRatings[] = ["info" => $games[$game->id], "ratings" => $ratings[$game->id] ?? [], "played" => $played];
         }
 
         return $gameRatings;
