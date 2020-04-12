@@ -67,7 +67,7 @@ class Queue
             } catch (GameNotFoundException $exception) {
                 $this->logger->alert("Error while getting game: " . $app["appid"]);
             } catch (GuzzleException $e) {
-                $this->logger->error("Encounted guzzle exception: " . $e->getMessage());
+                $this->logger->error("Encountered guzzle exception: " . $e->getMessage());
             } catch (NoGameDataException $e) {
                 $this->logger->alert("Game has no data! " . $e->getMessage());
             }

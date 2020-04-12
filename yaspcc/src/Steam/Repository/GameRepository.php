@@ -68,7 +68,7 @@ class GameRepository
         } else {
             try {
                 $game = $this->gameRequest->getGameByStoreApi($id);
-                if(!$game->isLinuxNative) {
+                if (!$game->isLinuxNative) {
                     $game = $this->setGameAverageRating($game);
                 }
             } catch (ApiLimitExceededException $exception) {
@@ -93,7 +93,7 @@ class GameRepository
         }
 
         $gameObj = $this->createGameFromJson($json);
-        if(!$gameObj->isLinuxNative && (!$gameObj->averageRating || $this->hasNewAverage($gameObj))) {
+        if (!$gameObj->isLinuxNative && (!$gameObj->averageRating || $this->hasNewAverage($gameObj))) {
             $this->setGameAverageRating($gameObj);
         }
 
@@ -109,7 +109,7 @@ class GameRepository
     {
         $ratings = $this->ratingService->getGameRatings($game->id);
 
-        if(is_null($ratings) || count($ratings) == 0) {
+        if (is_null($ratings) || count($ratings) == 0) {
             return $game;
         }
 
@@ -141,7 +141,7 @@ class GameRepository
      */
     public function getIgnoredGames(): array
     {
-        if(!empty($this->ignoredGames)) {
+        if (!empty($this->ignoredGames)) {
             return $this->ignoredGames;
         }
 
@@ -159,7 +159,7 @@ class GameRepository
     private function addIgnoredId(int $gameId): void
     {
         $ignoreList = $this->getIgnoredGames();
-        $ignoreList[]= $gameId;
+        $ignoreList[] = $gameId;
         $this->setIgnoredGames($ignoreList);
     }
 
