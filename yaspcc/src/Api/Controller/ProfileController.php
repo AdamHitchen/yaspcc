@@ -48,32 +48,30 @@ class ProfileController
     {
         //Remove trailing slash
         $idsNoTrailingSlash = preg_replace('@/$@', "", $profileIds);
-
         $ids = explode('/', $idsNoTrailingSlash);
-
         $response = new Response();
         $response->headers->set('Content-Type', 'application/json');
 
         try {
-            $matchedGames = $this->profileRatingRequest->getCommonGames($ids);
+            [$matchedGames, $profiles] = $this->profileRatingRequest->getCommonGames($ids);
             $ratings = $this->ratingService->getRatingsByArray($matchedGames);
+            $gameRatings = $this->ratingService->matchGamesToRatings($matchedGames, $ratings);
 
-            //TODO: Move this out of the controller
-            $gameRatings = [];
-            foreach($matchedGames as $game) {
-                $gameRatings[] =  ["Info" => $matchedGames[$game->id], "ratings" => $ratings[$game->id] ?? []];
-            }
         } catch (UserNotFoundException $e) {
             $response->setStatusCode(400)
-                ->setContent('{"error" : "Steam profile not found. Please check your profile is public" }');
+                ->setContent(new Error("Steam profile not found. Please check your profile is public"));
+            return $response;
+        } catch (NoGamesException $e) {
+            $response->setStatusCode(400)
+                ->setContent(new Error("No games found in one of the provided accounts"));
             return $response;
         } catch (\throwable $e) {
             $response->setStatusCode(500)
-                ->setContent('{"error" : "Something went wrong while contacting the server" }');
+                ->setContent(new Error("Something went wrong while contacting the server"));
             return $response;
         }
 
-        return $response->setStatusCode(200)->setContent(json_encode($gameRatings ));
+        return $response->setStatusCode(200)->setContent(json_encode($gameRatings));
     }
 
     /**

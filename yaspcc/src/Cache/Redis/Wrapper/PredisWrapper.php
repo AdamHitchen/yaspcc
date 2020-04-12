@@ -78,4 +78,9 @@ class PredisWrapper implements RedisClientServiceInterface
     {
         return $this->client->mget($keys);
     }
+
+    function delete(array $keys): int
+    {
+        return $this->client->del($keys);
+    }
 }

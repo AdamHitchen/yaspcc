@@ -4,6 +4,7 @@ namespace Yaspcc\Steam\Repository;
 
 use Psr\Log\LoggerInterface;
 use Yaspcc\Cache\CacheServiceInterface;
+use Yaspcc\Ratings\Service\RatingServiceInterface;
 use Yaspcc\Steam\Entity\Game;
 use Yaspcc\Steam\Exception\ApiLimitExceededException;
 use Yaspcc\Steam\Exception\GameNotFoundException;
@@ -25,18 +26,28 @@ class GameRepository
      * @var LoggerInterface
      */
     private $logger;
+    /**
+     * @var RatingServiceInterface
+     */
+    private $ratingService;
 
     /**
      * GameRepository constructor.
      * @param CacheServiceInterface $cache
      * @param GameRequest $gameRequest
+     * @param RatingServiceInterface $ratingService
      * @param LoggerInterface $logger
      */
-    public function __construct(CacheServiceInterface $cache, GameRequest $gameRequest, LoggerInterface $logger)
-    {
+    public function __construct(
+        CacheServiceInterface $cache,
+        GameRequest $gameRequest,
+        RatingServiceInterface $ratingService,
+        LoggerInterface $logger
+    ) {
         $this->cache = $cache;
         $this->gameRequest = $gameRequest;
         $this->logger = $logger;
+        $this->ratingService = $ratingService;
     }
 
     /**
@@ -57,7 +68,9 @@ class GameRepository
         } else {
             try {
                 $game = $this->gameRequest->getGameByStoreApi($id);
-                $this->set($game);
+                if (!$game->isLinuxNative) {
+                    $game = $this->setGameAverageRating($game);
+                }
             } catch (ApiLimitExceededException $exception) {
                 $game = $this->gameRequest->getGame($id);
             } catch (GameNotFoundException $exception) {
@@ -72,13 +85,38 @@ class GameRepository
             } elseif (!$game->isComplete()) {
                 $this->addToQueue($id);
             } elseif ($game->isComplete()) {
+                $this->set($game);
                 return $game;
             }
 
             throw new GameNotFoundException("Game not available");
         }
 
-        return $this->createGameFromJson($json);
+        $gameObj = $this->createGameFromJson($json);
+        if (!$gameObj->isLinuxNative && (!$gameObj->averageRating || $this->hasNewAverage($gameObj))) {
+            $this->setGameAverageRating($gameObj);
+        }
+
+        return $gameObj;
+    }
+
+    private function hasNewAverage(Game $game): bool
+    {
+        return $this->cache->exists('game:' . $game->id . ':average');
+    }
+
+    private function setGameAverageRating(Game $game): Game
+    {
+        $ratings = $this->ratingService->getGameRatings($game->id);
+
+        if (is_null($ratings) || count($ratings) == 0) {
+            return $game;
+        }
+
+        $game->averageRating = $this->ratingService->calculateAverageRating($ratings);
+        $this->set($game);
+        $this->cache->delete(["game:" . $game->id . ":average"]);
+        return $game;
     }
 
     /**
@@ -103,7 +141,7 @@ class GameRepository
      */
     public function getIgnoredGames(): array
     {
-        if(!empty($this->ignoredGames)) {
+        if (!empty($this->ignoredGames)) {
             return $this->ignoredGames;
         }
 
@@ -121,7 +159,7 @@ class GameRepository
     private function addIgnoredId(int $gameId): void
     {
         $ignoreList = $this->getIgnoredGames();
-        $ignoreList[]= $gameId;
+        $ignoreList[] = $gameId;
         $this->setIgnoredGames($ignoreList);
     }
 
@@ -163,6 +201,7 @@ class GameRepository
         }
         $gamesJson = $this->cache->getMany($keys);
         $games = [];
+
         foreach ($gamesJson as $key => &$game) {
             if (is_null($game)) {
                 try {
@@ -172,10 +211,13 @@ class GameRepository
                         continue;
                     }
                 } catch (\Throwable $e) {
-                    $this->logger->error("Error while fetching game: " . $e->getMessage());
+                    $this->logger->error("Error while fetching game in GameRepository: " . $e->getMessage());
                 }
             } else {
                 $game = $this->createGameFromJson($game);
+                if (!$game->isLinuxNative && (!$game->averageRating || $this->hasNewAverage($game))) {
+                    $game = $this->setGameAverageRating($game);
+                }
             }
 
             $games[$game->id] = $game;

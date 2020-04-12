@@ -21,6 +21,8 @@ class Game
     /** @var bool */
     public $isMultiplayer;
 
+    public $averageRating;
+
 
     /**
      * Game constructor.
@@ -73,6 +75,8 @@ class Game
         $this->isMultiplayer = $jsonObj->isMultiplayer;
         $this->hasCompleteData = $jsonObj->hasCompleteData;
         $this->imageUrl = $jsonObj->imageUrl;
+        $this->averageRating = $jsonObj->averageRating;
+
         return $this;
     }
 }

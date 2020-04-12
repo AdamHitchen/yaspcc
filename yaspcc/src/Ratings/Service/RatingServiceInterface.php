@@ -14,4 +14,6 @@ interface RatingServiceInterface
      * @return Submission[]
      */
     function getRatingsByArray(array $games): array;
+
+    function calculateAverageRating(array $ratings): string;
 }

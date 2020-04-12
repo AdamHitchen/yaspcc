@@ -4,6 +4,7 @@ namespace Yaspcc\Api;
 
 use Psr\Log\LoggerInterface;
 use Yaspcc\Cache\CacheServiceInterface;
+use Yaspcc\Ratings\Exception\NoGamesException;
 use Yaspcc\Ratings\Service\RatingServiceInterface;
 use Yaspcc\Steam\Entity\User\Game;
 use Yaspcc\Steam\Entity\User\Profile;
@@ -57,9 +58,11 @@ class ProfileRatingRequest
     {
         $profile = $this->steamService->getProfile($userId);
         $profileGames = $this->getProfileGames($profile);
-        $matches = $this->getRatingMatches($profileGames);
 
-        return json_encode($matches);
+        $ratings = $this->ratingService->getRatingsByArray($profileGames);
+        $gamesRatings = $this->ratingService->matchGamesToRatings($profileGames, $ratings);
+
+        return json_encode($gamesRatings);
     }
 
     /**
@@ -94,6 +97,10 @@ class ProfileRatingRequest
         /** @var Game[] $games */
         $games = $profiles[$smallestProfileId]->games;
 
+        if($smallestProfileCount === 0) {
+            throw new NoGamesException(sprintf("User %s has no games or profile is hidden", $smallestProfileId));
+        }
+
         foreach ($games as $game) {
             foreach($profiles as $profile) {
                 if(!array_key_exists($game->appid, $profile->games)) {
@@ -111,8 +118,7 @@ class ProfileRatingRequest
 
         $results = $this->steamService->getGames($matches);
 
-
-        return $results;
+        return [$results, $profiles];
     }
 
     /**
@@ -139,19 +145,16 @@ class ProfileRatingRequest
      */
     private function getProfileGames(Profile $profile): array
     {
-        $games = [];
+        $gameIds = [];
         $ignored = $this->steamService->getIgnoredGames();
         /** @var Game $game */
         foreach ($profile->games as $game) {
-            if (!in_array($game->appid, $ignored)) {
-                try {
-                    $games[] = $this->steamService->getGame($game->appid);
-                } catch (\Exception $exception) {
-                    $this->logger->alert("Game in user profile not found: " . $game->appid);
-                }
+            if (!in_array($game->getAppid(), $ignored)) {
+                $gameIds[]= $game->getAppid();
             }
         }
-        return $games;
+
+        return $this->steamService->getGames($gameIds);
     }
 
 }

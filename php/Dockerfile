@@ -1,7 +1,6 @@
-FROM php:7.2-fpm
+FROM php:7.3-fpm
 
-RUN apt-get update
-RUN apt-get install git zlib1g-dev -y
+RUN apt-get update && apt-get install git zlib1g-dev libzip-dev -y
 RUN docker-php-ext-install -j$(nproc) mysqli \
     && docker-php-ext-install -j$(nproc) zip
 RUN yes | pecl install xdebug

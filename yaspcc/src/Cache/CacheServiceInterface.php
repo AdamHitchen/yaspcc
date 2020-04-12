@@ -15,4 +15,6 @@ interface CacheServiceInterface
      * @return string[]
      */
     function getMany(array $keys): array;
+
+    function delete(array $keys): int;
 }
